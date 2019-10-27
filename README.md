@@ -10,5 +10,5 @@ For running your self-paced reading task (online/offline).
 ## FABanalysis
 For cleaning data and generating eye-tracking like indices.
 
-##user manual
-To be continue.
+## user manual
+To be continued.
