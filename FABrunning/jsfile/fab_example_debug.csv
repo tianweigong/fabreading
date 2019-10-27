@@ -1,0 +1,9 @@
+list,fab_key,fab_stimulus,fab_question,fab_qwait,fab_instruction,fab_feedback
+,,,,,forward key: Space. Yes key: J. No key: F.,
+1,Y,An egg was in the fridge.,did you see the object mentioned in the previous sentence?<br><img src='media/egginpan.bmp'>,500,ready to go?,1
+1,N,,did you see the fridge in the picture?,900,,1
+1,Y,,did you see the fridge in the sentence?,100,,1
+1,Y,An egg was in the pan.,egginpan.bmp,600,,0
+1,N,,did you see the <b>pan</b> in the picture?,700,,0
+,,,,,,
+1,Y,,did you see the pan in the sentence?,900,,0

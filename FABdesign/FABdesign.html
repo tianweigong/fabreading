@@ -1,0 +1,665 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<style type="text/css">
+		* {
+		  box-sizing: border-box;
+		  font-family: Comic Sans MS,cursive;
+		  color: black;
+		  margin: 0;
+		  font-size: 16px;
+		}
+		h1{
+		  margin-top: 50px;
+		  text-align: center;
+		  font-size: 300%;
+		}
+		h2{
+		  text-align: center;
+		  font-size: 150%;
+		}
+		body{
+		  background-color:#F9F8EB;
+		}
+		.part{
+		  margin-top: 50px;
+		  font-size: 200%;
+		  text-align: center;
+		  color: #76B39D;
+		  font-weight: bold;
+		}
+		.step{
+		  margin-top: 50px;
+		  font-size: 150%;
+		  color: #76B39D;
+		}
+		.question{
+		  margin-top: 20px;
+		  font-size: 150%;
+		  margin-bottom: 20px;
+		}
+		.keystress{
+		  color:#FAB95B;
+		}
+		.question_hint{
+		  margin-top: 20px;
+		  margin-bottom: 20px;
+		}
+		#framework {
+			width: 900px;
+		  position: relative;
+		  margin: 0 auto;
+		}
+		#word_example,#i_example,#q_example{
+		  font-family: Arial;
+		  text-align: center;
+		  font-size: 30px;
+		  background: #c0c0c0;
+		  min-height:30px;
+		  max-height: 500px;
+		  border: 1px solid black;
+		}
+		#footer {
+		   position: fixed;
+		   right:0; 
+		   bottom:0;
+		   width:100px;
+		   height:100px;
+		   background:#FAB95B;
+		   padding: 5px;
+		   text-align: center;
+		}
+		#footer_key{
+		  text-align: center;
+		  font-size: 18px;
+		  font-weight: bold;
+		}
+		#footer_keycode{
+		  font-size: 10px;
+		}
+		input[type=number] {
+		  width: 50px;
+		}
+	</style>
+	<title>FABdesign</title>
+</head>
+<body>
+	<div id="framework">
+		<h1>FABdesign</h1>
+		<h2>design your own self-paced forward-and-backward task</h2>
+		<form id="form1" onsubmit="getexp();return false">
+
+			<div class="part">Part 1: Create Your Parameter File.</div>
+
+			<div class="step">Step 1: The Stimuli Setting.</div>
+
+			<div class="question">Please choose the type of stimuli.</div>
+			<div><input type="radio" name="sti_type" value="sentence" id="sti_type_sentence" required="required" onclick="wordexampleshow()"><label for="sti_type_sentence">Text</label></div>
+			<div><input type="radio" name="sti_type" value="picture" id="sti_type_picture" required="required" onclick="wordexampleshow()"><label for="sti_type_picture">Picture</label></div>
+			<div class="question">Please choose background color for your screen.</div>
+			<div><input type="color" name="bg_color" id="bg_color" value="#c0c0c0" onchange="bgcolexample()"><label for="bg_color">Background color</label></div>
+			
+			<div id="question_word">
+			<div class="question">Please set a layout for your text stimuli.</div>
+			<div><input type="color" name="word_color" id="word_color" value="#000000" onchange="wordexample()"><label for="word_color">Word color</label></div>
+			<select name="word_font" id="word_font" onchange="wordexample()"></select>
+			Font size: <input type="number" name="word_size" id="word_size" min="0" value="30" oninput="wordexample()">px&nbsp
+			<input type="checkbox" name="word_style" id="word_style_bold" value="bold" onchange="wordexample()"><label for="word_style_bold">Bold</label> 
+			<input type="checkbox" name="word_style" id="word_style_italic" value="italic" onchange="wordexample()"><label for="word_style_italic">Italic</label>
+			<input type="checkbox" name="word_style" id="word_style_underline" value="underline" onchange="wordexample()"><label for="word_style_underline">Underline</label>  
+			&nbsp Example words: <input type="text" name="word_example_word" id="word_example_word" value="Hello." oninput="wordexample()">
+			<div class="question_hint">example:</div>
+			<div id="word_example">Hello.</div>
+			</div>
+
+			<div id="question_display">
+			<div class="question"> Please choose how the stimuli should display.</div>
+			<div><input type="radio" name="sti_display" value="center" id="sti_display_center" required="required" onclick="wordmargin()" ><label for="sti_display_center">Single location (Fixed presentation on the center)</label></div>
+			<div><input type="radio" name="sti_display" value="sequence" id="sti_display_sequence" required="required" onclick="wordmargin()"><label for="sti_display_sequence">Moving window </label></div>
+			</div>
+
+			<div id="question_margin_fix">
+			<div style="margin-top: 20px;"> The fixed window will not exceed <input type="number" id="margin_threshold" name="margin_threshold" value="10"> % from both sides of the screen. Sentences exceed this range will be sparated into multiple lines. The stimuli will be fixed at the vertical center of the screen.</div>
+			</div>
+
+			<div id="question_margin_seq">
+			<div style="margin-top: 20px;"> The sequences will begin at <input type="number" id="margin_left_threshold" name="margin_left_threshold" required="required" value="10"> % from the left edge of the screen, and cannot exceed <input type="number" id="margin_right_threshold" name="margin_right_threshold" value="10"> % from the right edge of the screen, Sentences exceed this range will be sparated into multiple lines. The sequences will begin at <input type="number" id="margin_top_threshold" name="margin_top_threshold" value="50"> % from the top of the screen.</div>
+			</div>
+
+			<div id="question_pace">
+			<div class="question"> Please choose your segmentation pattern.</div>
+			<div><input type="radio" name="sti_pace" value="1" id="sti_pace_1" required="required" checked="checked"><label for="sti_pace_1">Pattern 1: by space (e.g., Englsih)</label></div>
+			<div><input type="radio" name="sti_pace" value="2" id="sti_pace_2" required="required"><label for="sti_pace_2">Pattern 2: by character (e.g., East Asian languages)</label></div>
+			<div><input type="radio" name="sti_pace" value="3" id="sti_pace_3" required="required"><label for="sti_pace_3">Pattern 3: customized, by "|" </label></div>
+			</div>
+
+			<div class="step">Step 2: The Keyboard Setting</div>
+
+			<div class="question">Do you allow participants to go back during the learning process?</div>
+			<div><input type="radio" name="kb_setting" value="both" id="kb_setting_both" required="required" onclick="backwordshow()"><label for="kb_setting_both">Yes (it is a back-and-forth learning task)</label></div>
+			<div><input type="radio" name="kb_setting" value="forward" id="kb_setting_forward" required="required" onclick="backwordshow()"><label for="kb_setting_forward">No (it is a traditional self-paced learning task)</label></div>
+
+			<div class="question">Please press and save the response keys (you can see the key information on the lower right key cube).</div>
+			<div id="key_forward_display" >Forward key:<p class="keystress">please press one key and click the save button</p></div>
+			<button type="button" id="key_forward" onclick="forwardsave()">save it as forward key</button>
+			<div id="question_backward">
+			<div id="key_backward_display" >Backward key:<p class="keystress">please press one key and click the save button</p></div>
+			<button type="button" id="key_backward" onclick="backwardsave()">save it as backward key</button>
+			</div>
+
+			<div class="step">Step 3: Instruction</div>
+
+			<div id="question_i_layout">
+			<div class="question">Do you want a special layout for Instruction?</div>
+			<div><input type="radio" name="i_font_custom" value="yes" id="i_font_yes" required="required" onclick="iexampleshow()"><label for="i_font_yes">Yes</label></div>
+			<div><input type="radio" name="i_font_custom" value="no" id="i_font_no" required="required" checked="checked" onclick="iexampleshow()"><label for="i_font_no">No, the layout of questions should be identical to the layout of stimuli / I will use pictures for the instruction / I don't have instruction in this program.</label></div>
+			</div>
+
+			<div id="question_i">
+			<div class="question_hint">Please choose a special word layout for your instruction.</div>
+			<div><input type="color" name="i_color" id="i_color" value="#000000" onchange="iexample()"><label for="i_color">Instruction Color</label></div>
+			<select name="i_font" id="i_font" onchange="q=iexample()"></select>
+			Font size: <input type="number" name="i_size" id="i_size" min="0" value="30" oninput="iexample()">px&nbsp
+			<input type="checkbox" name="i_style" id="i_style_bold" value="bold" onchange='iexample()'><label for="i_style_bold">Bold</label> 
+			<input type="checkbox" name="i_style" id="i_style_italic" value="italic" onchange="iexample()"><label for="i_style_italic">Italic</label>
+			<input type="checkbox" name="i_style" id="i_style_underline" value="underline" onchange="iexample()"><label for="i_style_underline">Underline</label>  
+			&nbsp Example words: <input type="text" name="i_example_word" id="i_example_word" value="Instruction." oninput="iexample()">
+			<div class="question_hint">example:</div>
+			<div id="i_example">Instruction.</div>
+			</div>
+
+			<div class="step">Step 4: Comprehension Questions and Feedbacks.</div>
+
+			<div class="question">Do you have any comprehension question for participants?</div>
+			<div><input type="radio" name="q_type" value="choice" id="q_type_choice" required="required" onclick="qchoiceshow()"><label for="q_type_choice">Yes, and they are multichoice questions.</label></div>
+			<div><input type="radio" name="q_type" value="text" id="q_type_text" required="required" onclick="qchoiceshow()"><label for="q_type_text">Yes, and they are text-input questions.</label></div>
+			<div><input type="radio" name="q_type" value="no" id="q_type_no" required="required" onclick="qchoiceshow()"><label for="q_type_no">No.</label></div>
+			
+			<div id="question_choice">
+			<div class="question">level of the choices (2-4): <input type="number" name="q_choice" id="q_choice" min="2" max="4" value="2" required="required" oninput="qchoice()"></div> 
+			<div class="question">Please press and save the response key.</div>
+			<div class="q_key">
+				<div class="q_key_level" id="q_key_level1">Level 1-- answer label in dataset: <input type="text" id="q_key_level1_label" name="q_key_level1_label" value="1"><div id="key_level1_display">Key for level 1:<p class="keystress">please press one key and click the save button</p></div><button type="button" id="key_level1" onclick="level1save()">save it as key for level 1</button></div>
+
+				<div class="q_key_level" id="q_key_level2">Level 2-- answer label in dataset: <input type="text" id="q_key_level2_label" name="q_key_level2_label" value="2"><div id="key_level2_display">Key for level 2:<p class="keystress">please press one key and click the save button</p></div><button type="button" id="key_level2" onclick="level2save()">save it as key for level 2</button></div>
+
+				<div class="q_key_level" id="q_key_level3">Level 3-- answer label in dataset: <input type="text" id="q_key_level3_label" name="q_key_level3_label" value="3"><div id="key_level3_display">Key for level 3:<p class="keystress">please press one key and click the save button</p></div><button type="button" id="key_level3" onclick="level3save()">save it as key for level 3</button></div>
+
+				<div class="q_key_level" id="q_key_level4">Level 4-- answer label in dataset: <input type="text" id="q_key_level4_label" name="q_key_level4_label" value="4"><div id="key_level4_display">Key for level 4:<p class="keystress">please press one key and click the save button</p></div><button type="button" id="key_level4" onclick="level4save()">save it as key for level 4</button></div>
+			</div>
+			</div>
+
+			<div id="question_q_layout">
+			<div class="question">Do you want a special layout for comprehension questions?</div>
+			<div><input type="radio" name="q_font_custom" value="yes" id="q_font_yes" required="required" onclick="qexampleshow()"><label for="q_font_yes">Yes</label></div>
+			<div><input type="radio" name="q_font_custom" value="no" id="q_font_no" required="required" checked="checked" onclick="qexampleshow()"><label for="q_font_no">No, the layout of questions should be identical to the layout of stimuli</label></div>
+			</div>
+
+			<div id="question_q">
+			<div class="question_hint">Please choose a special word layout for your question.</div>
+			<div><input type="color" name="q_color" id="q_color" value="#000000" onchange="qexample()"><label for="q_color">Question Color</label></div>
+			<select name="q_font" id="q_font" onchange="qexample()"></select>
+			Font size: <input type="number" name="q_size" id="q_size" min="0" value="30" oninput="qexample()">px&nbsp
+			<input type="checkbox" name="q_style" id="q_style_bold" value="bold" onchange='qexample()'><label for="q_style_bold">Bold</label> 
+			<input type="checkbox" name="q_style" id="q_style_italic" value="italic" onchange="qexample()"><label for="q_style_italic">Italic</label>
+			<input type="checkbox" name="q_style" id="q_style_underline" value="underline" onchange="qexample()"><label for="q_style_underline">Underline</label>  
+			&nbsp Example words: <input type="text" name="q_example_word" id="q_example_word" value="Question?" oninput="qexample()">
+			<div class="question_hint">example:</div>
+			<div id="q_example">Question?</div>
+
+			<div id="question_q_position">
+			<div class="question_hint">Do you want to display questions at the same position as stimuli or always on the center?</div>
+			<div><input type="radio" name="q_position" value="fix" id="q_position_fix" required="required" ><label for="q_position_fix">Beginning at the same position</label></div>
+			<div><input type="radio" name="q_position" value="center" id="q_position_center" required="required" checked="checked"><label for="q_position_center">Always on the center</label></div>
+			</div>
+			</div>
+
+			<div id="question_q_delay">
+			<div class="question">The questions will appear <input type="number" id="q_delay" name="q_delay" required="required" value="0"> ms later after the final windows dispear.</div>
+			<div class="question_hint">If you want to give different delays for different trials, you can set up an extra column in your csv -- see details in the uesr manual.</div>
+			</div>
+
+			<div id="question_fb">
+			<div class="question">Do you want to give the feedback to participants' answer?</div>
+			<div class="question_hint">If you want to give only at some special blocks, e.g., practice part, you can choose "yes" and then set up an extra column in your csv file -- see details in the user manual. The feedback will disappear when participants press the forward key.</div>
+			<div><input type="radio" name="fb_type" value="negative" id="fb_type_negative" required="required" onclick="fbwordshow()"><label for="fb_type_negative">Yes, only negative</label></div>
+			<div><input type="radio" name="fb_type" value="both" id="fb_type_both" required="required" onclick="fbwordshow()"><label for="fb_type_both">Yes, both positive and negative</label></div>
+			<div><input type="radio" name="fb_type" value="no" id="fb_type_no" required="required" checked="checked" onclick="fbwordshow()"><label for="fb_type_no">No</label></div>
+			<div class="fb_hint" id="fb_hint_positive">Input your positive feedback:<input type="text" id="fb_hint_word_positive" name="fb_hint_word_positive" value="correct!"></div>
+			<div class="fb_hint" id="fb_hint_negative">Input your nagative feedback:<input type="text" id="fb_hint_word_negative" name="fb_hint_word_negative" value="wrong!"></div>
+			</div>
+
+			<div class="step">Step 5: The End of Experiment Message.</div>
+
+			<div class="question"> Input the Message you want to show to participants when they finish the task.</div>
+			<p class="question_hint">All other instructions or breaks could be set later in the Part 2.</p>
+			<textarea id='byeword' cols='50' rows='4'>Thanks for participating! You data have been recorded and saved in the dault download folder for this browser. Now you can close the window.</textarea>
+
+			<div class="step">Step 6: Download the Parameter File.</div>
+			<p class="question">Please download the parameter js file and then put it on the experimental folder:</p>
+			<div class="div_submit"><input type="submit" id="submit_botton1" value="save the experimental parameter file"></div> 
+		</form>
+
+		<form id="form2" onsubmit="expcsvcheck();return false">
+
+		<div class="part">Part 2: Create Your Stimulus File.</div>
+
+		<div class="step">Step 1: Create and Check Your CSV File.</div>
+		<p class="question_hint"> </p>
+		<div class="step">Step 2: Compile Your CSV File.</div>
+		<p class="question_hint"></p>
+		<div class="question"> Please upload your csv file:<br><input type="file" id="expcsv" name="expcsv" accept=".csv"></div> 
+		<div class="question">After uploading(choosing) csv, you can now save the stimulus js file and then put it on the experimental folder (just as the parameter folder).</div>
+		<div class="div_submit"><input type="submit" id="submit_botton2" value="save the experimental stimilus file"></div> 
+		</form>
+		<div class="step">Step 3: Prepare Other Picture Files.</div>
+		<div class="question">If you indicate any pictures (jpg,bmp,png), including instruction and stimuli, please put them into the media folder under the experimental folder.</div>
+		<div class="part">All done! Please try and enjoy the experiment!</div>
+		<div style="margin-top: 60px"></div>
+	</div>
+	<div id="footer"><div id="footer_title">Key Cube</div><div id="footer_key"></div><div id="footer_keycode">Press any key.</div></div>
+
+</body>
+	<script type="text/javascript" charset="utf-8">
+		//create new variables
+		var forwardkey;
+		var backwardkey;
+		var e_key;
+		var maxlevel=4;
+		var expfile;
+		var imgfile;
+		var level1key="";
+		var level2key="";
+		var level3key="";
+		var level4key="";
+		//create options for fonts
+		var exp = new Object;
+		var fontFamily = new Array('Arial','Arial Black','Comic Sans MS','Courier','Courier New','Cursive','Fantasy','Garamond','Georgia','Helvetica','Impact','Monospace','Palatino','Tahoma','Times New Roman','Verdana','SimHei','SimSun','FangSong','KaiTi','STHeiti','STSong','STFangsong','STKaiti');
+		var fontFamilyName = new Array('Arial','Arial Black','Comic Sans MS','Courier','Courier New','Cursive','Fantasy','Garamond','Georgia','Helvetica','Impact','Monospace','Palatino','Tahoma','Times New Roman','Verdana','SimHei(windows)','SimSun(windows)','FangSong(windows)','KaiTi(windows)','STHeiti(OSX)','STSong(OSX)','STFangsong(OSX)','STKaiti(OSX)');
+		selectFont = document.getElementById('word_font');
+		for(var i = 0; i < fontFamily.length; i++){
+		    selectFont.options.add(new Option(fontFamilyName[i], fontFamily[i]));
+		}
+		selectFont = document.getElementById('i_font');
+		for(var i = 0; i < fontFamily.length; i++){
+		    selectFont.options.add(new Option(fontFamilyName[i], fontFamily[i]));
+		}
+		selectFont = document.getElementById('q_font');
+		for(var i = 0; i < fontFamily.length; i++){
+		    selectFont.options.add(new Option(fontFamilyName[i], fontFamily[i]));
+		}
+		// initial setting for stimuli
+		for (var i = 3; i <=maxlevel; i++) {
+			document.getElementById("q_key_level"+i).style.display = "none"
+		}
+		document.getElementById('question_word').style.display="none";
+		document.getElementById('question_pace').style.display="none";
+		function wordexampleshow(){
+			if(document.getElementById("sti_type_sentence").checked){
+				document.getElementById('question_word').style.display="block";
+				document.getElementById('question_pace').style.display="block";
+			}else {
+				document.getElementById('question_word').style.display="none";
+				document.getElementById('question_pace').style.display="none";
+			}
+		}
+		document.getElementById('question_margin_seq').style.display="none";
+		document.getElementById('question_margin_fix').style.display="none";
+		document.getElementById('question_q_position').style.display="none";
+		function wordmargin(){
+			if(document.getElementById("sti_display_sequence").checked){
+				document.getElementById('question_margin_seq').style.display="block";
+				document.getElementById('question_margin_fix').style.display="none";
+				document.getElementById('question_q_position').style.display="block";
+			}else{
+				document.getElementById('question_margin_seq').style.display="none";
+				document.getElementById('question_margin_fix').style.display="block";
+				document.getElementById('question_q_position').style.display="none";
+			}
+		}
+		// initial setting for keyboard
+		document.getElementById('question_backward').style.display="none";
+		function backwordshow(){
+			if (document.getElementById("kb_setting_both").checked) {
+				document.getElementById('question_backward').style.display="block";
+			}else{
+				document.getElementById('question_backward').style.display="none";
+			}
+		}
+		// initial setting for instruction
+		document.getElementById('question_i').style.display="none";
+		function iexampleshow(){
+			if (document.getElementById("i_font_yes").checked) {
+				document.getElementById('question_i').style.display="block";
+			}else{
+				document.getElementById('question_i').style.display="none";
+			}
+		}
+		// initial setting for comprehension question
+		document.getElementById('question_choice').style.display="none";
+		document.getElementById('question_q_layout').style.display="none";
+		document.getElementById('question_fb').style.display="none";
+		document.getElementById('question_q_delay').style.display="none";
+		function qchoiceshow(){
+			if (document.getElementById("q_type_choice").checked){
+				document.getElementById('question_choice').style.display="block";
+				document.getElementById('question_q_layout').style.display="block";
+				document.getElementById('question_fb').style.display="block";
+				document.getElementById('question_q_delay').style.display="block";
+			}else if (document.getElementById("q_type_text").checked){
+				document.getElementById('question_choice').style.display="none";
+				document.getElementById('question_q_layout').style.display="block";
+				document.getElementById('question_fb').style.display="block";
+				document.getElementById('question_q_delay').style.display="block";
+			}else{
+				document.getElementById('question_choice').style.display="none";
+				document.getElementById('question_q_layout').style.display="none";
+				document.getElementById('question_fb').style.display="none";
+				document.getElementById('question_q_delay').style.display="none";
+			}
+		}
+		document.getElementById('question_q').style.display="none";
+		function qexampleshow(){
+			if (document.getElementById("q_font_yes").checked) {
+				document.getElementById('question_q').style.display="block";
+			}else{
+				document.getElementById('question_q').style.display="none";
+			}
+		}
+		// initial setting for feedback
+		document.getElementById('fb_hint_positive').style.display="none";
+		document.getElementById('fb_hint_negative').style.display="none";
+		function fbwordshow(){
+			if (document.getElementById("fb_type_negative").checked) {
+				document.getElementById('fb_hint_negative').style.display="block";
+				document.getElementById('fb_hint_positive').style.display="none";
+			}else if (document.getElementById("fb_type_both").checked){
+				document.getElementById('fb_hint_negative').style.display="block";
+				document.getElementById('fb_hint_positive').style.display="block";
+			}else{
+				document.getElementById('fb_hint_negative').style.display="none";
+				document.getElementById('fb_hint_positive').style.display="none";
+			}
+		}
+		// functions for setting
+		function bgcolexample(){
+			document.getElementById('word_example').style.background=document.getElementById('bg_color').value
+			document.getElementById('i_example').style.background=document.getElementById('bg_color').value
+			document.getElementById('q_example').style.background=document.getElementById('bg_color').value
+		}
+
+		function wordexample(){
+			document.getElementById('word_example').innerHTML=document.getElementById('word_example_word').value
+			document.getElementById('word_example').style.color=document.getElementById('word_color').value
+			document.getElementById('word_example').style.fontFamily = document.getElementById('word_font').value;
+			document.getElementById('word_example').style.fontSize = document.getElementById('word_size').value +"px";
+
+			if (document.getElementById('word_style_italic').checked){
+				document.getElementById('word_example').style.fontStyle = "italic";
+			}else{
+				document.getElementById('word_example').style.fontStyle = "normal";
+			}
+
+			if (document.getElementById('word_style_bold').checked){
+				document.getElementById('word_example').style.fontWeight = "bold";
+			}else{
+				document.getElementById('word_example').style.fontWeight = "normal";
+			}
+
+			if (document.getElementById('word_style_underline').checked){
+				document.getElementById('word_example').style.textDecoration = "underline";
+			}else{
+				document.getElementById('word_example').style.textDecoration = "none";
+			}
+
+			if (document.getElementById('i_font_no').checked){
+				document.getElementById('i_example').style.color=document.getElementById('word_color').value;
+				document.getElementById('i_example').style.fontFamily = document.getElementById('word_font').value;
+				document.getElementById('i_example').style.fontSize = document.getElementById('word_size').value +"px";
+
+				if (document.getElementById('word_style_italic').checked){
+					document.getElementById('i_example').style.fontStyle = "italic";
+				}else{
+					document.getElementById('i_example').style.fontStyle = "normal";
+				}
+				if (document.getElementById('word_style_bold').checked){
+					document.getElementById('i_example').style.fontWeight = "bold";
+				}else{
+					document.getElementById('i_example').style.fontWeight = "normal";
+				}
+
+				if (document.getElementById('word_style_underline').checked){
+					document.getElementById('i_example').style.textDecoration = "underline";
+				}else{
+					document.getElementById('i_example').style.textDecoration = "none";
+				}
+			}
+
+
+			if (document.getElementById('q_font_no').checked){
+				document.getElementById('q_example').style.color=document.getElementById('word_color').value;
+				document.getElementById('q_example').style.fontFamily = document.getElementById('word_font').value;
+				document.getElementById('q_example').style.fontSize = document.getElementById('word_size').value +"px";
+
+				if (document.getElementById('word_style_italic').checked){
+					document.getElementById('q_example').style.fontStyle = "italic";
+				}else{
+					document.getElementById('q_example').style.fontStyle = "normal";
+				}
+				if (document.getElementById('word_style_bold').checked){
+					document.getElementById('q_example').style.fontWeight = "bold";
+				}else{
+					document.getElementById('q_example').style.fontWeight = "normal";
+				}
+				if (document.getElementById('word_style_underline').checked){
+					document.getElementById('q_example').style.textDecoration = "underline";
+				}else{
+					document.getElementById('q_example').style.textDecoration = "none";
+				}
+
+			}
+		}
+
+		function iexample(){
+			document.getElementById('i_example').innerHTML=document.getElementById('i_example_word').value;
+			document.getElementById('i_example').style.color=document.getElementById('i_color').value;
+			document.getElementById('i_example').style.fontFamily = document.getElementById('i_font').value;
+			document.getElementById('i_example').style.fontSize = document.getElementById('i_size').value +"px";
+
+			if (document.getElementById('i_style_italic').checked){
+				document.getElementById('i_example').style.fontStyle = "italic";
+			}else{
+				document.getElementById('i_example').style.fontStyle = "normal";
+			}
+
+			if (document.getElementById('i_style_bold').checked){
+				document.getElementById('i_example').style.fontWeight = "bold";
+			}else{
+				document.getElementById('i_example').style.fontWeight = "normal";
+			}
+
+			if (document.getElementById('i_style_underline').checked){
+				document.getElementById('i_example').style.textDecoration = "underline";
+			}else{
+				document.getElementById('i_example').style.textDecoration = "none";
+			}
+
+		}
+
+		function qexample(){
+			document.getElementById('q_example').innerHTML=document.getElementById('q_example_word').value;
+			document.getElementById('q_example').style.color=document.getElementById('q_color').value;
+			document.getElementById('q_example').style.fontFamily = document.getElementById('q_font').value;
+			document.getElementById('q_example').style.fontSize = document.getElementById('q_size').value +"px";
+
+			if (document.getElementById('q_style_italic').checked){
+				document.getElementById('q_example').style.fontStyle = "italic";
+			}else{
+				document.getElementById('q_example').style.fontStyle = "normal";
+			}
+
+			if (document.getElementById('q_style_bold').checked){
+				document.getElementById('q_example').style.fontWeight = "bold";
+			}else{
+				document.getElementById('q_example').style.fontWeight = "normal";
+			}
+
+			if (document.getElementById('q_style_underline').checked){
+				document.getElementById('q_example').style.textDecoration = "underline";
+			}else{
+				document.getElementById('q_example').style.textDecoration = "none";
+			}
+
+		}
+
+		document.addEventListener('keydown',function logkey(e){
+			e_key=e;
+		  	document.getElementById("footer_key").innerHTML= e_key.key;
+		  	document.getElementById("footer_keycode").innerHTML="code:"+e_key.code+" which:"+e_key.keyCode;
+		});
+
+		function forwardsave(){
+			forwardkey=e_key.keyCode;
+			document.getElementById("key_forward_display").innerHTML= "Forward key:  '"+e_key.key+"'; "+e_key.code;	
+
+		}
+		function backwardsave(){
+			backwardkey=e_key.keyCode;
+			document.getElementById("key_backward_display").innerHTML= "Backward key:  '"+e_key.key+"'; "+e_key.code;	
+		}
+
+		function qchoice(){
+			for (var i = 2; i <=maxlevel; i++) {
+				document.getElementById("q_key_level"+i).style.display = "none"
+			}
+
+			for (var i = 1; i <= document.getElementById("q_choice").value; i++){
+				document.getElementById("q_key_level"+i).style.display = "block"
+			}
+
+		}
+
+		function level1save(){
+			level1key=e_key.keyCode;
+			document.getElementById("key_level1_display").innerHTML= "Key for level 1:  '"+e_key.key+"'; "+e_key.code;	
+		}
+		function level2save(){
+			level2key=e_key.keyCode;
+			document.getElementById("key_level2_display").innerHTML= "Key for level 2:  '"+e_key.key+"'; "+e_key.code;	
+		}
+		function level3save(){
+			level3key=e_key.keyCode;
+			document.getElementById("key_level3_display").innerHTML= "Key for level 3:  '"+e_key.key+"'; "+e_key.code;	
+		}
+		function level4save(){
+			level4key=e_key.keyCode;
+			document.getElementById("key_level4_display").innerHTML= "Key for level 4:  '"+e_key.key+"'; "+e_key.code;	
+		}
+		//save all parameters 
+		function getexp(){
+			//step1
+			exp.sti_type=[document.getElementById('sti_type_sentence').checked,document.getElementById('sti_type_picture').checked];
+			exp.bg_color=document.getElementById('bg_color').value;
+			exp.word_color=document.getElementById('word_color').value;
+			exp.word_font=document.getElementById('word_font').value;
+			exp.word_size=document.getElementById('word_size').value;
+			exp.word_style=[document.getElementById('word_style_bold').checked,document.getElementById('word_style_italic').checked,document.getElementById('word_style_underline').checked];
+			exp.sti_display=[document.getElementById('sti_display_center').checked,document.getElementById('sti_display_sequence').checked];
+			if (exp.sti_type[1]){
+				exp.sti_pace=[true,true,false];		
+			}else{
+				exp.sti_pace=[document.getElementById('sti_pace_1').checked,document.getElementById('sti_pace_2').checked,document.getElementById('sti_pace_3').checked];
+			}
+
+			if (document.getElementById("sti_display_sequence").checked){
+				exp.margin=[document.getElementById('margin_left_threshold').value,document.getElementById('margin_right_threshold').value,document.getElementById('margin_top_threshold').value];
+				exp.q_position=[document.getElementById('q_position_fix').checked]
+			}else{
+				exp.margin=[document.getElementById('margin_threshold').value,document.getElementById('margin_threshold').value,50];
+				exp.q_position=[0]
+			}
+
+			//step2
+			exp.kb_setting=[document.getElementById('kb_setting_both').checked,document.getElementById('kb_setting_forward').checked];
+			exp.forwardkey=forwardkey;
+			exp.backwardkey=backwardkey;
+			//step3
+			if (document.getElementById('i_font_yes').checked){
+				exp.i_color=document.getElementById('i_color').value;
+				exp.i_font=document.getElementById('i_font').value;
+				exp.i_size=document.getElementById('i_size').value;
+				exp.i_style=[document.getElementById('i_style_bold').checked,document.getElementById('i_style_italic').checked,document.getElementById('i_style_underline').checked];
+			}else{
+				exp.i_color=exp.word_color;
+				exp.i_font=exp.word_font;
+				exp.i_size=exp.word_size;
+				exp.i_style=exp.word_style;
+			}
+			//step4
+			exp.q_type=[document.getElementById('q_type_choice').checked,document.getElementById('q_type_text').checked,document.getElementById('q_type_no').checked];
+			if (exp.q_type[0]){
+				exp.levelkey=[level1key,level2key,level3key,level4key];
+				exp.q_key_label=[document.getElementById('q_key_level1_label').value,document.getElementById('q_key_level2_label').value,document.getElementById('q_key_level3_label').value,document.getElementById('q_key_level4_label').value];
+			}else{
+				exp.levelkey=[];
+				exp.q_key_label=[];
+			}
+			//step4-comprehension question layout
+			if (document.getElementById('q_font_yes').checked){
+				exp.q_color=document.getElementById('q_color').value;
+				exp.q_font=document.getElementById('q_font').value;
+				exp.q_size=document.getElementById('q_size').value;
+				exp.q_style=[document.getElementById('q_style_bold').checked,document.getElementById('q_style_italic').checked,document.getElementById('q_style_underline').checked];
+			}else{
+				exp.q_color=exp.word_color;
+				exp.q_font=exp.word_font;
+				exp.q_size=exp.word_size;
+				exp.q_style=exp.word_style;
+			}
+			exp.q_delay=document.getElementById('q_delay').value;
+			//step4-feedback
+			exp.fb_type=[document.getElementById('fb_type_negative').checked,document.getElementById('fb_type_both').checked,document.getElementById('fb_type_no').checked];
+			exp.fb_hint_word_positive=document.getElementById('fb_hint_word_positive').value;
+			exp.fb_hint_word_negative=document.getElementById('fb_hint_word_negative').value; 
+			//step5
+			exp.byeword=document.getElementById('byeword').value;
+
+			jsonData=JSON.stringify(exp);
+			
+			download('var exp='+jsonData, 'exp.js', '"text/javascript"');
+		}
+
+		function download(content, fileName, contentType) {
+		    var a = document.createElement("a");
+		    var file = new Blob([content], {type: contentType});
+		    a.href = URL.createObjectURL(file);
+		    a.download = fileName;
+		    a.click();
+		}
+
+		// part 2 convey the csv
+		function expcsvcheck(){
+			var file = document.getElementById('expcsv').files[0];
+			var reader = new FileReader();
+			reader.onload= function (e){
+				console.log(e.target.result);
+				var csv2obj=new Object();
+				csv2arr=e.target.result.split('\r\n');
+				csvcol=csv2arr[0].split(',');
+				for (var j = 0; j < csvcol.length; j++) {
+					csv2obj[csvcol[j]]=[];
+				}
+				for (var i = 1; i < csv2arr.length; i++) {
+					csvline=csv2arr[i].split(',');
+					for (var j = 0; j <csvcol.length; j++) {
+						csv2obj[csvcol[j]][i-1]=csvline[j];
+					}
+				}
+				console.log(csv2obj);
+				jsonData=JSON.stringify(csv2obj);
+				download('var sti='+jsonData, 'sti.js', '"text/javascript"');
+			}
+			reader.readAsText(file);
+		}
+	</script>
+</html>

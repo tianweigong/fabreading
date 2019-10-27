@@ -1,0 +1,584 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<script type="text/javascript" src="jsfile/exp.js" charset="utf-8"></script>
+	<script type="text/javascript" src="jsfile/sti.js" charset="utf-8"></script>
+	<style type="text/css">
+		body{
+		  box-sizing: border-box;
+		  margin: 0;
+		}
+		.sti_p,#instruction,#stimuli,#sti_frame,#q_frame,#q_word,#q_input,#q_feedback {
+		  box-sizing: border-box;
+		  margin: 0;
+		}
+		.sti_p{
+		  display: inline;
+		}
+		#exp_begin, #byebye{
+		  margin-top: 100px;
+		  margin-left: 30px;
+		}
+		#instruction{
+		  text-align: center;
+		  padding: 50px;
+		}
+		#stimuli {
+			height: 100%;
+			width: 100%;
+			position: absolute;
+		  /*vertical-align: middle;*/
+		}
+		#sti_frame,#q_frame{
+		  position: absolute;
+		}
+		#q_word, #q_input,#q_feedback{
+		  position: relative;
+		  margin-left: auto;
+		}
+	</style>
+	<title>FABrunning</title>
+</head>
+<body>
+	<div id="exp_begin"><form id="sub_id_submit" onsubmit="expbegin();return false">Subject ID: <input type="text" id="sub_id"> </br>click this button to begin the experiment: &nbsp<input type="submit" id="exp_begin_button" value="next->"></form></div>
+
+	<div id="instruction">
+		<div id="ins_word"></div>
+		<div id="ins_continue"><button type='button' id='ins_continue_button' onclick='trialbegin()'>next-></button></div>
+	</div>
+	<div id="stimuli">
+		<div id="sti_frame">
+			<div id="sti_word"></div>
+		</div>
+		
+		<div id="q_frame">
+			<div id="q_word"></div> 
+			<form id="q_input" onsubmit="qinput();return false">
+				<input type="text" name="q_input_ans" id="q_input_ans" required="required">
+				<input type="submit" id="q_input_botton" value="submit">
+			</form>
+			<div id="q_feedback"></div>
+		</div>
+	</div>
+
+	<div id="byebye">
+		<div id="byeword"></div>
+		<form id="submitform" onsubmit="datasave();return false">
+		<button type="submit">save the data again</button>
+		</form>
+		</form>
+	</div>
+</body>
+	<script defer="defer" type="text/javascript" charset="utf-8">
+		//intialization
+		var display_time=0;
+		var response_time=0;
+		var trial=0;
+		var path=0;
+		var stilist=[];
+		var stiloop=[];
+		var stipre=[];
+		var arealist=[];
+		var areaposlist=[];
+		var areasumlist=[];
+		var looplist=[];
+		var loopposlist=[];
+		var loopsumlist=[];
+		var loopposition=0;
+		var loopnumber=0;
+		var areaposition=0;
+		var areanumber=0;
+		var position=0;
+		var mode="ins"; 
+		var keymode="f";
+		var lastword=0;
+		var dt= new Array();
+		var dttemp= new Object();
+		var dt_string="";
+		var sti_string="";
+		var sub_id="";
+		var qwait=exp.q_delay;
+		var fbmark=0;
+		if (sti.fab_feedback==undefined){
+		  fbmark=1;
+		}//see if feedback was defined in csv
+		//result variables
+		var rtlist=["dat_Window","dat_WindowSequence","dat_LoopNumber","dat_LoopPosition","dat_LoopSum","dat_AreaNumber","dat_AreaPosition","dat_AreaSum","dat_ReactionTime","dat_Time"];
+		var anslist=["dat_Ans","dat_AnsReactionTime","dat_Accuracy"];
+		var spacelist=[""," "];
+		var dtlist=rtlist.concat(anslist);
+		var userlist=Object.keys(sti);
+		for (var i=0;i<dtlist.length;i++){
+		  dttemp[dtlist[i]]=[];
+		};
+		var ext= /(?:\.([^.]+))?$/;
+		var imglist=["jpg","JPG","jpeg","JPEG","bmp","BMP"];
+		var pctlist=["。","，","、","？","！","：","；"];
+
+		//layout setting
+		document.body.style.background = exp.bg_color;
+		document.getElementById("stimuli").style.paddingLeft=Number(exp.margin[0])+"%";
+		document.getElementById("stimuli").style.paddingRight=Number(exp.margin[1])+"%";
+		document.getElementById('sti_frame').style.width = Number(100-Number(exp.margin[0])-Number(exp.margin[1]))+"%";
+		document.getElementById('q_frame').style.width = Number(100-Number(exp.margin[0])-Number(exp.margin[1]))+"%";
+		if (exp.sti_display[1]){
+		  document.getElementById("sti_frame").style.height="1%";
+		  document.getElementById("sti_frame").style.top=Number(exp.margin[2])+"%";
+		  document.getElementById("q_frame").style.top=Number(exp.margin[2])+"%";
+		}
+		if (exp.sti_display[1] && !(exp.q_position[0])){
+		  document.getElementById('q_frame').style.top="50%";
+		  document.getElementById('q_frame').style.transform="translateY(-50%)";
+		  document.getElementById('q_frame').style.textAlign = "center";
+		}
+		if (exp.sti_display[0]){
+		  document.getElementById("sti_frame").style.top="50%";
+		  document.getElementById("sti_frame").style.transform="translateY(-50%)";
+		  document.getElementById('sti_frame').style.textAlign = "center"; 
+
+		  document.getElementById('q_frame').style.top="50%";
+		  document.getElementById('q_frame').style.transform="translateY(-50%)";
+		  document.getElementById('q_frame').style.textAlign = "center"; 
+		}
+		document.getElementById('sti_word').style.color = exp.word_color;
+		document.getElementById('sti_word').style.fontFamily = exp.word_font;
+		document.getElementById('sti_word').style.fontSize = exp.word_size+"px";
+		if (exp.word_style[0]){document.getElementById('sti_word').style.fontWeight = "bold";};
+		if (exp.word_style[1]){document.getElementById('sti_word').style.fontStyle = "italic";};
+		if (exp.word_style[2]){document.getElementById('sti_word').style.textDecoration = "underline";};
+		document.getElementById('exp_begin').style.color = exp.i_color;
+		document.getElementById('exp_begin').style.fontFamily = exp.i_font;
+		document.getElementById('exp_begin').style.fontSize = exp.i_size+"px";
+		if (exp.i_style[0]){document.getElementById('exp_begin').style.fontWeight = "bold";};
+		if (exp.i_style[1]){document.getElementById('exp_begin').style.fontStyle = "italic";};
+		if (exp.i_style[2]){document.getElementById('exp_begin').style.textDecoration = "underline";};
+		document.getElementById('byebye').style.color = exp.i_color;
+		document.getElementById('byebye').style.fontFamily = exp.i_font;
+		document.getElementById('byebye').style.fontSize = exp.i_size+"px";
+		document.getElementById('byeword').innerHTML=exp.byeword;
+		if (exp.i_style[0]){document.getElementById('byebye').style.fontWeight = "bold";};
+		if (exp.i_style[1]){document.getElementById('byebye').style.fontStyle = "italic";};
+		if (exp.i_style[2]){document.getElementById('byebye').style.textDecoration = "underline";};
+		document.getElementById('instruction').style.color = exp.i_color;
+		document.getElementById('instruction').style.fontFamily = exp.i_font;
+		document.getElementById('instruction').style.fontSize = exp.i_size+"px";
+		if (exp.i_style[0]){document.getElementById('instruction').style.fontWeight = "bold";};
+		if (exp.i_style[1]){document.getElementById('instruction').style.fontStyle = "italic";};
+		if (exp.i_style[2]){document.getElementById('instruction').style.textDecoration = "underline";};
+		document.getElementById('q_word').style.color = exp.q_color;
+		document.getElementById('q_word').style.fontFamily = exp.q_font;
+		document.getElementById('q_word').style.fontSize = exp.q_size+"px";
+		if (exp.q_style[0]){document.getElementById('q_word').style.fontWeight = "bold";};
+		if (exp.q_style[1]){document.getElementById('q_word').style.fontStyle = "italic";};
+		if (exp.q_style[2]){document.getElementById('q_word').style.textDecoration = "underline";};
+		document.getElementById('q_feedback').style.fontFamily = exp.q_font;
+		document.getElementById('q_feedback').style.fontSize = exp.q_size+"px";
+		document.getElementById('q_feedback').style.fontStyle = "italic";
+		
+		//hide div
+		document.getElementById('instruction').style.display="none";
+		document.getElementById('stimuli').style.display="none";
+		document.getElementById('sti_frame').style.display="none";
+		document.getElementById('q_frame').style.display="none";
+		document.getElementById('byebye').style.display="none";
+		document.getElementById('sti_word').style.display="none";
+		document.getElementById('q_word').style.display="none";
+		document.getElementById('q_feedback').style.display="none";
+		document.getElementById("q_input").style.display="none";
+
+		//functions
+		function expbegin(){
+		  sub_id=document.getElementById('sub_id').value;
+		  document.getElementById('exp_begin').style.display="none";
+		  insinsert();
+		}
+
+		function expend(){
+		  document.getElementById('stimuli').style.display="none";
+		  for (var j=0; j<Object.keys(dt[0]).length;j++){
+		    dt_string=dt_string+Object.keys(dt[0])[j]+",";
+		  }
+		  dt_string=dt_string.slice(0,-1);
+		  dt_string=dt_string+"\r\n";
+
+		  for (var i=0; i<dt.length;i++){
+		      for (var j=0;j<Object.keys(dt[0]).length;j++){
+		        dt_string=dt_string+dt[i][Object.keys(dt[0])[j]]+",";
+		      }
+		      dt_string=dt_string.slice(0,-1);
+		      dt_string=dt_string+"\r\n";
+		  }
+		  dt_string=dt_string.substr(0,dt_string.length-2);
+		  document.getElementById('byebye').style.display="block";
+		  download(dt_string, 'data_'+sub_id+'.csv', '"text/csv"');
+		  mode="over";
+		}
+
+		function datasave(){
+		  download(dt_string, 'data_'+sub_id+'.csv', '"text/csv"');
+		}
+
+		function datarecord(){
+		  if (dttemp.dat_WindowSequence.length==0){
+		    if (dttemp.dat_Ans.length>0){
+		      dt[dt.length]=new Object();
+		      dt[dt.length-1]["dat_Subject"]=sub_id;
+		      for (var j=0;j<userlist.length;j++){
+		          dt[dt.length-1][userlist[j]]=sti[userlist[j]][trial];
+		      }
+		      dt[dt.length-1]["dat_Trial"]=trial+1;
+		      dt[dt.length-1]["dat_Window"]=undefined;
+		      dt[dt.length-1]["dat_WindowSequence"]=undefined;
+		      dt[dt.length-1]["dat_LoopNumber"]=undefined;
+		      dt[dt.length-1]["dat_LoopPosition"]=undefined;
+		      dt[dt.length-1]["dat_LoopSum"]=undefined;
+		      dt[dt.length-1]["dat_AreaNumber"]=undefined;
+		      dt[dt.length-1]["dat_AreaPosition"]=undefined;
+		      dt[dt.length-1]["dat_AreaSum"]=undefined;
+		      dt[dt.length-1]["dat_ReactionTime"]=undefined;
+		      dt[dt.length-1]["dat_Time"]=undefined;
+		      dt[dt.length-1]["dat_Ans"]=dttemp["dat_Ans"][0];
+		      dt[dt.length-1]["dat_AnsReactionTime"]=dttemp["dat_AnsReactionTime"][0];
+		      dt[dt.length-1]["dat_Accuracy"]=dttemp["dat_Accuracy"][0];
+		    }
+		  }else{
+		    for (var i=0;i<dttemp.dat_WindowSequence.length;i++){
+		      dt[dt.length]=new Object();
+		      dt[dt.length-1]["dat_Subject"]=sub_id;
+		      for (var j=0;j<userlist.length;j++){
+		        dt[dt.length-1][userlist[j]]=sti[userlist[j]][trial];
+		      }
+		      dt[dt.length-1]["dat_Trial"]=trial+1;
+		      dt[dt.length-1]["dat_Window"]=dttemp["dat_Window"][i];
+		      dt[dt.length-1]["dat_WindowSequence"]=dttemp["dat_WindowSequence"][i]+1;
+		      dt[dt.length-1]["dat_LoopNumber"]=dttemp["dat_LoopNumber"][i];//caution! +1 or not 
+		      dt[dt.length-1]["dat_LoopPosition"]=dttemp["dat_LoopPosition"][i]+1;
+		      dt[dt.length-1]["dat_LoopSum"]=dttemp["dat_LoopSum"][i];
+		      dt[dt.length-1]["dat_AreaNumber"]=dttemp["dat_AreaNumber"][i]+1;
+		      dt[dt.length-1]["dat_AreaPosition"]=dttemp["dat_AreaPosition"][i]+1;
+		      dt[dt.length-1]["dat_AreaSum"]=dttemp["dat_AreaSum"][i];
+		      dt[dt.length-1]["dat_ReactionTime"]=dttemp["dat_ReactionTime"][i];
+		      dt[dt.length-1]["dat_Time"]=dttemp["dat_Time"][i];
+		      dt[dt.length-1]["dat_Ans"]=dttemp["dat_Ans"][0];
+		      dt[dt.length-1]["dat_AnsReactionTime"]=dttemp["dat_AnsReactionTime"][0];
+		      dt[dt.length-1]["dat_Accuracy"]=dttemp["dat_Accuracy"][0];
+		    }
+		  }
+		  trial=trial+1;
+		  insinsert();
+		}
+
+		function insinsert(){
+		  if (trial>=sti.fab_stimulus.length){
+		    mode="over";
+		    expend();
+		  }else if (sti.fab_instruction!= undefined && sti.fab_instruction[trial]!= "undefined" && sti.fab_instruction[trial]!= "" && sti.fab_instruction[trial]!= null){
+		  	mode="ins";
+		    document.getElementById('instruction').style.display="block";
+		    document.getElementById('stimuli').style.display="none";
+		    if (imglist.indexOf(ext.exec(sti.fab_instruction[trial])[1])>=0){
+		        document.getElementById('ins_word').innerHTML="<img src='media/"+sti.fab_instruction[trial]+"'>"
+		    }else{
+		        document.getElementById('ins_word').innerHTML=sti.fab_instruction[trial];
+		    }
+		  }else{
+		  	trialbegin();
+		  }
+		}
+
+		function trialbegin(){
+		  if (sti.fab_stimulus[trial]!="" && sti.fab_stimulus[trial]!= null){
+			document.getElementById('instruction').style.display="none";
+			document.getElementById('stimuli').style.display="block";
+			document.getElementById("stimuli").style.cursor = 'none';
+			document.getElementById("sti_frame").style.display="block";
+			document.getElementById("sti_word").style.display="block";
+			document.getElementById("q_word").style.display="none";
+			path=0;
+			position=0;
+			for (var i=0;i<dtlist.length;i++){
+			dttemp[dtlist[i]]=[];
+			};
+			leftmargin=Number(exp.margin);
+			markeradd();
+		  }else{
+		  	for (var i=0;i<dtlist.length;i++){
+		    dttemp[dtlist[i]]=[];
+		    };
+		    comprehension();
+		  }
+		}
+
+		function markeradd(){ //caution! -- recursive
+		  looplist=[];
+		  loopposlist=[];
+		  loopsumlist=[];
+		  loopnumber=0;
+		  loopposition=0;
+		  arealist=[];
+		  areaposlist=[];
+		  areasumlist=[];
+		  areanumber=0;
+		  areaposition=0;
+		  loopposition=0;
+		  stipre=[];
+		  sti_string="";
+		  stilist=sti.fab_stimulus[trial].split('/');
+		  var p=0;
+
+		  for (var i=0; i<stilist.length;i++){
+		    if (stilist[i].length>0){
+		      stiloop=[];
+		      loopposition=0;
+		      areaposition=0;
+		      loopnumber=loopnumber+1;
+		      if (exp.sti_pace[1]){
+		        for (var j=0;j<stilist[i].length;j++){
+		          if (pctlist.indexOf(stilist[i][j])>=0 && j>0){
+		            stiloop[stiloop.length-1]=stiloop[stiloop.length-1]+stilist[i][j];
+		          }else{
+		            stiloop.push(stilist[i][j]); 
+		          }
+		        }
+		      }else if(exp.sti_pace[2]){
+		        stiloop=stilist[i].split('|');
+		      }else{
+		        stiloop=stilist[i].split(' ');
+		      }
+
+		      for (var j=0;j<stiloop.length;j++){
+		        if (stiloop[j]=="*"){
+		          areanumber=areanumber+1;
+		          areaposition=0;
+		        }else{
+		          looplist[p]=i;
+		          loopposlist[p]=loopposition;
+		          arealist[p]=areanumber;
+		          areaposlist[p]=areaposition;
+		          areaposition=areaposition+1;
+		          loopposition=loopposition+1;
+		          p=p+1;
+		        }
+		      }
+
+		      for (var j=stiloop.length-1;j>=0;j--) {
+		        if (stiloop[j] == "*") {
+		          stiloop.splice(j, 1);
+		        }
+		      }
+		      stipre=stipre.concat(stiloop);
+		    }
+		  }
+
+		  var amount=1;
+		  for (var i=1;i<areaposlist.length;i++){
+		    if (areaposlist[i]>areaposlist[i-1]){
+		      amount=amount+1;
+		    }else{
+		      for (var j=1;j<=amount;j++){
+		        areasumlist=areasumlist.concat([amount]);
+		      }
+		      amount=1;
+		    }
+		  }
+		  for (var j=1;j<=amount;j++){
+		    areasumlist=areasumlist.concat([amount]);
+		  }
+
+		  var amount=1;
+		  for (var i=1;i<loopposlist.length;i++){
+		    if (loopposlist[i]>loopposlist[i-1]){
+		      amount=amount+1;
+		    }else{
+		      for (var j=1;j<=amount;j++){
+		        loopsumlist=loopsumlist.concat([amount]);
+		      }
+		      amount=1;
+		    }
+		  }
+		  for (var j=1;j<=amount;j++){
+		    loopsumlist=loopsumlist.concat([amount]);
+		  }
+
+		  if (exp.sti_display[1]){
+		    for (var i=0; i<stipre.length; i++) {
+		      if(ext.exec(stipre[i])[1]!=undefined && imglist.indexOf(ext.exec(stipre[i])[1]>=0)){
+		        sti_string=sti_string+"<p class='sti_p' id=word"+i+"><img src='media/"+stipre[i]+"'></p>";//caution!
+		      }else{
+		        sti_string=sti_string+"<p class='sti_p' id=word"+i+">"+stipre[i]+spacelist[Number(exp.sti_pace[0]*exp.sti_type[0])]+"</p>";//caution!
+		      }
+		    }
+		    document.getElementById("sti_word").innerHTML=sti_string;
+		  }
+		  stipresent();
+		}
+
+		function comprehension(){
+		  if (sti.fab_question!= undefined &&sti.fab_question[trial]!= "undefined" && sti.fab_question[trial]!="" && sti.fab_question[trial]!=null){
+		    document.getElementById("sti_frame").style.display="none";
+		    document.getElementById("q_word").innerHTML="";
+
+		    if (imglist.indexOf(ext.exec(sti.fab_question[trial])[1])>=0){
+		        document.getElementById('q_word').innerHTML="<img src='media/"+sti.fab_question[trial]+"'>"
+		      }else{
+		        document.getElementById('q_word').innerHTML=sti.fab_question[trial];
+		      }
+		    mode="";
+		    if (sti.fab_qwait==undefined||sti.fab_qwait[trial]==""){
+		      setTimeout(function(){qpresent()},qwait);
+		    }else{
+		      setTimeout(function(){qpresent()},Number(sti.fab_qwait[trial]));
+		    }
+		  }else{
+		    datarecord();
+		  }
+		}
+
+		function qpresent(){
+		  document.getElementById("q_frame").style.display="block";
+		  document.getElementById("q_word").style.display="block";
+		  if (exp.q_type[1]){
+		  document.getElementById("stimuli").style.cursor = 'auto';
+		  document.getElementById("q_input").style.display="block";
+		  }
+		  display_time=Date.now();
+		  mode="que";
+		}
+
+		function qinput(){
+		  response_time=Date.now();
+		  dttemp.dat_Ans[0]=document.getElementById("q_input_ans").value;
+		  dttemp.dat_AnsReactionTime[0]=response_time-display_time;
+		  mode="";//caution!
+		  document.getElementById("q_input_ans").value="";
+		  document.getElementById("q_word").style.display="none";
+		  document.getElementById("q_input").style.display="none";
+		  qfeedback();
+		}
+
+		function stipresent(){
+		  if (exp.sti_display[1]){
+		    for (var i=0; i<stipre.length; i++) {
+		      document.getElementById("word"+i).style.visibility = 'hidden';
+		    }
+		    if (keymode=="f") {
+		      position=position+1;
+		      document.getElementById("word"+Number(position-1)).style.visibility = 'visible';
+		    }else{  
+		      position=position-1;
+		      document.getElementById("word"+Number(position-1)).style.visibility='visible';
+		    }
+		  }else{
+		    if (keymode=="f") {
+		      position=position+1;
+		      document.getElementById("sti_word").innerHTML=stipre[position-1];
+		    }else{
+		      position=position-1;
+		      document.getElementById("sti_word").innerHTML=stipre[position-1];
+		    } 
+		  }
+		  mode="sti";//caution!
+		  display_time=Date.now();
+		  dttemp.dat_Window[path]=stipre[position-1];
+		  dttemp.dat_WindowSequence[path]=path;
+		  dttemp.dat_LoopNumber[path]=looplist[position-1];
+		  dttemp.dat_LoopPosition[path]=loopposlist[position-1];
+		  dttemp.dat_LoopSum[path]=loopsumlist[position-1];
+		  dttemp.dat_AreaNumber[path]=arealist[position-1];
+		  dttemp.dat_AreaPosition[path]=areaposlist[position-1];
+		  dttemp.dat_AreaSum[path]=areasumlist[position-1];
+		}
+
+		document.addEventListener('keydown', logKey);
+		function logKey(e) {
+		  if (e.keyCode==exp.forwardkey){
+		    if (mode=="sti"){    
+		      //data recording
+		      response_time=Date.now();
+		      dttemp.dat_ReactionTime[path]=response_time-display_time;
+		      dttemp.dat_Time[path]=response_time;
+		      path=path+1;
+		      //data recoding over
+		      mode="";
+		      keymode="f";
+		      if (position>=stipre.length){
+		        position=0;
+		        comprehension();
+		      }else{
+		        stipresent();
+		      }
+		    }else if(mode=="fb"){
+		      document.getElementById("q_feedback").style.display="none";
+		      document.getElementById("q_frame").style.display="none";
+		      mode="";
+		      datarecord();
+		    }else{}
+		  }
+		  if (e.keyCode==exp.backwardkey && position>1 && looplist[position-1]==looplist[position-2]&& mode=="sti"){
+		    //data recording
+		    response_time=Date.now();
+		    dttemp.dat_ReactionTime[path]=response_time-display_time;
+		    dttemp.dat_Time[path]=response_time;
+		    path=path+1;
+		    //data recoding over
+		    keymode="b";
+		    stipresent();
+		  }
+		  if (exp.levelkey.indexOf(e.keyCode)>=0 && mode=="que" && Date.now()-display_time>300){
+		    response_time=Date.now();
+		    dttemp.dat_Ans[0]=exp.q_key_label[exp.levelkey.indexOf(e.keyCode)];
+		    dttemp.dat_AnsReactionTime[0]=response_time-display_time;
+		    dttemp.dat_Accuracy[0]=Number(dttemp.dat_Ans[0]==sti.fab_key[trial]);
+		    document.getElementById("q_word").style.display="none";
+		    mode="";//caution!
+		    qfeedback();
+		  }
+
+		  if(e.shiftKey && e.keyCode==81){
+		     var retVal = confirm("Do you want to quit and save existing data?");
+		     if (retVal){
+		      expend();
+		    }else{
+		    };
+		    
+		  }
+		}
+
+		function qfeedback(){
+		  if (exp.fb_type[2]||(fbmark==0 && sti.fab_feedback[trial]==0)){
+		    document.getElementById("q_frame").style.display="none";
+		    datarecord();
+		  }else if (exp.fb_type[0]) {
+		    if(!dttemp.dat_Accuracy[0]){
+		      mode="fb";
+		      document.getElementById("q_feedback").style.display="block";
+		      document.getElementById("q_feedback").innerHTML=exp.fb_hint_word_negative;
+		      document.getElementById('q_feedback').style.color = "#FF0000";
+		      display_time=Date.now();
+		    }else{
+		      document.getElementById("q_frame").style.display="none";
+		      datarecord();
+		    } 
+		  }else{
+		    mode="fb";
+		    document.getElementById("q_feedback").style.display="block";
+		    display_time=Date.now();
+		    if(!dttemp.dat_Accuracy[0]){
+		      document.getElementById("q_feedback").innerHTML=exp.fb_hint_word_negative;
+		      document.getElementById('q_feedback').style.color = "#FF0000";
+		    }else{
+		      document.getElementById("q_feedback").innerHTML=exp.fb_hint_word_positive;
+		      document.getElementById('q_feedback').style.color = "#0000FF";
+		    }
+		  }
+		}
+
+		function download(content, fileName, contentType) {
+		  var a = document.createElement("a");
+		  var file = new Blob([content], {type: contentType});
+		  a.href = URL.createObjectURL(file);
+		  a.download = fileName;
+		  a.click();
+		}
+	</script>
+</html>

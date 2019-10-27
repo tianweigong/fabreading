@@ -1,0 +1,696 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<style type="text/css">
+		* {
+		  box-sizing: border-box;
+		  font-family: Comic Sans MS,cursive;
+		  color: black;
+		  margin: 0;
+		  font-size: 16px;
+		}
+		h1{
+		  margin-top: 50px;
+		  text-align: center;
+		  font-size: 300%;
+		  color: #FAB95B;
+		}
+		h2{
+		  text-align: center;
+		  font-size: 150%;
+		  color: #FAB95B;
+		}
+		body{
+		  background-color:#F9F8EB;
+		}
+		form {
+		  margin-top: 50px;
+		  border: 3px solid #FAB95B;
+		  padding: 20px;
+		}
+		.part{
+		  font-size: 200%;
+		  font-weight: bold;
+		  border-bottom: 3px solid #FAB95B;
+		}
+		#framework {
+		  width: 900px;
+		  position: relative;
+		  margin: 0 auto;
+		}
+		.step{
+		  margin-top: 50px;
+		  font-size: 150%;
+		  color: #76B39D;
+		}
+		.question_hint{
+		  margin-top: 20px;
+		  margin-bottom: 20px;
+		}
+		.question{
+		  margin-top: 20px;
+		  font-size: 150%;
+		  margin-bottom: 20px;
+		}
+		#filechoose{
+		  text-align: center;
+		}
+		input[type=number] {
+		  width: 100px;
+		}
+	</style>
+	<title>FABanalysis</title>
+</head>
+<body>
+	<div id="framework">
+		<h1>FABanalysis</h1>
+		<h2>processing indices from FAB data</h2>
+
+		<div id="filechoose">
+		<div class="question">Choose the data files.</div>
+		<div class="question_hint">IMPORTANT: please make sure all data files have the same structures (column names).</div>
+		<input type="file" id="datacsv" name="datacsv" accept=".csv" multiple="multiple">
+		</div>
+
+		<form id="form1" onsubmit="datawindow();return false">
+		<div class="part">Data processing by windows.</div>
+		<div class="question">1.Click the indices.</div>
+		<div><input type="checkbox" name="gd_w" id="gd_w" value="gd_w"><label for="gd_w">First pass time (FPT): xxxx.</label></div>
+		<div><input type="checkbox" name="nro_w" id="nro_w" value="nro_w"><label for="nro_w">Number of Regression Out (NRO): xxxx.</label></div>
+		<div><input type="checkbox" name="nri_w" id="nri_w" value="nri_w"><label for="nri_w">Number of Regression In (NRI): xxxx.</label></div>
+		<div><input type="checkbox" name="pro_w" id="pro_w" value="pro_w"><label for="pro_w">Probability of Regression Out (PRO): xxxx.</label></div>
+		<div><input type="checkbox" name="pri_w" id="pri_w" value="pri_w"><label for="pri_w">Probability of Regression In (PRI): xxxx.</label></div>
+		<div><input type="checkbox" name="rpd_w" id="rpd_w" value="rpd_w"><label for="rpd_w">Regression Path Duration (RPD): xxxx.</label></div>
+		<div><input type="checkbox" name="srpd_w" id="srpd_w" value="srpd_w"><label for="srpd_w">Selective Regression Path Duration (SRPD): xxxx.</label></div>
+		<div><input type="checkbox" name="rrt_w" id="rrt_w" value="rrt_w"><label for="rrt_w">Rereading Time (RRT): xxxx.</label></div>
+		<div><input type="checkbox" name="trt_w" id="trt_w" value="trt_w"><label for="trt_w">Total Reading Time (TRT): xxxx.</label></div>
+
+		<div class="question">2.Set the threshold and the outlier.</div>
+		<div>When calculate the duration indices (FPT,RPD,SRPD,RRT,TRT), we will ignore the reaction time less than <input type="number" id="threshold_w" name="threshold_w" value="0"> ms or more than <input type="number" id="outlier_w" name="outlier_w" value="99999999"> ms.</div> 
+
+
+		<div class="question">3.Click the button to save the data processing file.</div>
+		<div><input type="submit" id="submit_botton1" value="save the data processing file"></div> 
+		</form>
+
+		<form id="form2" onsubmit="dataarea();return false">
+		<div class="part">Data processing by interesting areas.</div>
+		<div class="question">1.Click the indices.</div>
+		<div><input type="checkbox" name="gd_a" id="gd_a" value="gd_a"><label for="gd_a">First pass time (FPT): xxxx.</label></div>
+		<div><input type="checkbox" name="nro_a" id="nro_a" value="nro_a"><label for="nro_a">Number of Regression Out (NRO): xxxx.</label></div>
+		<div><input type="checkbox" name="nri_a" id="nri_a" value="nri_a"><label for="nri_a">Number of Regression In (NRI): xxxx.</label></div>
+		<div><input type="checkbox" name="pro_a" id="pro_a" value="pro_a"><label for="pro_a">Probability of Regression Out (PRO): xxxx.</label></div>
+		<div><input type="checkbox" name="pri_a" id="pri_a" value="pri_a"><label for="pri_a">Probability of Regression In (PRI): xxxx.</label></div>
+		<div><input type="checkbox" name="rpd_a" id="rpd_a" value="rpd_a"><label for="rpd_a">Regression Path Duration (RPD): xxxx.</label></div>
+		<div><input type="checkbox" name="srpd_a" id="srpd_a" value="srpd_a"><label for="srpd_a">Selective Regression Path Duration (SRPD): xxxx.</label></div>
+		<div><input type="checkbox" name="rrt_a" id="rrt_a" value="rrt_a"><label for="rrt_a">Rereading Time (RRT): xxxx.</label></div>
+		<div><input type="checkbox" name="trt_a" id="trt_a" value="trt_a"><label for="trt_a">Total Reading Time (TRT): xxxx.</label></div>
+
+
+		<div class="question">2.Set the threshold and the outlier.</div>
+		<div>When calculate the duration indices (FPT,RPD,SRPD,RRT,TRT), we will ignore the reaction time less than <input type="number" id="threshold_a" name="threshold_a" value="0"> ms or more than <input type="number" id="outlier_a" name="outlier_a" value="99999999"> ms.</div> 
+
+
+		<div class="question">3.Click the button to save the data processing file.</div>
+		<div><input type="submit" id="submit_botton2" value="save the data processing file"></div> 
+		</form>
+
+		<form id="form3" onsubmit="dataacc();return false">
+		<div class="part">Accuracy for each trial.</div>
+		<div class="question_hint">Click the button to save the accuracy processing file for each trial.</div>
+		<div><input type="submit" id="submit_botton3" value="save the accuracy file"></div> 
+		</form>
+
+		<form id="form4" onsubmit="datamerge();return false">
+		<div class="part">Merge individual data files.</div>
+		<div class="question">1.Set the threshold and the outlier - cleaning the data.</div>
+		<div>When merge the data from different participants, we will delete the recording with reaction time less than <input type="number" id="threshold_m" name="threshold_m" value="0"> ms or more than <input type="number" id="outlier_m" name="outlier_m" value="99999999"> ms.</div> 
+		<div class="question">2.Click the button to save the merged data file.</div>
+		<div><input type="submit" id="submit_botton3" value="save the merged file"></div> 
+		</form>
+
+		<div style="margin-top: 60px"></div>
+	</div>
+</body>
+	<script type="text/javascript" charset="utf-8">
+		var dataset=new Array();
+		var datacsv=[];
+		var p=0;
+		var varlist=[];
+		var mode="";
+		var lower=0;
+		var upper=0;
+		var alllist=["dat_GD","dat_NRO","dat_NRI","dat_PRO","dat_PRI","dat_RPD","dat_SRPD","dat_RRT","dat_TRT"];
+		var chosenlist=[];
+		var excludedlist=[];
+		function datawindow(){
+			mode="window";
+			dataset=new Array();
+			datacsv=document.getElementById('datacsv').files;
+			lower=document.getElementById('threshold_w').value;
+			upper=document.getElementById('outlier_w').value;
+			excludedlist=["dat_ReactionTime","dat_Time","dat_WindowSequence"];
+			chosenlist=[document.getElementById('gd_w').checked,
+						document.getElementById('nro_w').checked,
+						document.getElementById('nri_w').checked,
+						document.getElementById('pro_w').checked,
+						document.getElementById('pri_w').checked,
+						document.getElementById('rpd_w').checked,
+						document.getElementById('srpd_w').checked,
+						document.getElementById('rrt_w').checked,
+						document.getElementById('trt_w').checked];
+
+			for (var i in chosenlist){
+				if (!chosenlist[i]){
+					excludedlist.push(alllist[i]);
+				}
+			}
+			p=0;
+			indicesWindow();
+		}
+
+		function indicesWindow(){
+			var reader = new FileReader();
+			var file = datacsv[p];
+			reader.readAsText(file);
+
+			reader.onload= function (e){
+				var rawset=new Array();
+				var subset = new Array();
+				var newset = new Array();
+				var csv2arr=e.target.result.split('\r\n');
+				//csv2arr.pop();
+				var csvcol=csv2arr[0].split(',');
+				//rawset generation
+				for (var i = 1; i <csv2arr.length; i++) {
+					var csvline=csv2arr[i].split(',');
+					rawset[i-1]=new Object();
+					for (var j = 0; j <csvcol.length; j++) {
+						rawset[i-1][csvcol[j]]=csvline[j];
+					}
+				}
+
+				for (var i=0;i<rawset.length;i++){
+					if (Number(rawset[i].dat_ReactionTime)>lower && Number(rawset[i].dat_ReactionTime)<upper){
+						subset[subset.length]=rawset[i];
+					}		
+				}
+				//indices calculation
+				var trialset= new Array();
+				var rawloopset= new Array();
+				var winindex= new Array();
+				var winset= new Array();
+
+				for (var k=1;k<=Math.max.apply(null, subset.map(z=>z.dat_Trial).map(Number));k++){
+					trialset= subset.filter(item => item.dat_Trial == k);
+					if (trialset.length==0){continue};
+
+					for (var l=1;l<=Math.max.apply(null, trialset.map(z=>z.dat_LoopNumber).map(Number));l++){
+						rawloopset= trialset.filter(item => item.dat_LoopNumber == l);
+						if (rawloopset.length==0){continue};
+						// loopset merge
+						var loopset= new Array();
+						var looparray=new Array();
+						for (var a=0;a<rawloopset.length;a++){
+							 if (rawloopset[a+1]!=undefined && rawloopset[a+1].dat_LoopPosition==rawloopset[a].dat_LoopPosition){
+							 	looparray[looparray.length]=Number(rawloopset[a].dat_ReactionTime);
+							 }else{				 	
+							 	looparray[looparray.length]=Number(rawloopset[a].dat_ReactionTime);
+							 	loopset[loopset.length]=rawloopset[a];
+							 	loopset[loopset.length-1]["dat_ReactionTime"]=looparray.reduce((a, b) => a + b, 0);
+							 	looparray=new Array();
+							 }
+						}
+						// window indices
+						for (var w=1;w<=Math.max.apply(null, loopset.map(z=>z.dat_LoopPosition).map(Number));w++){
+							winindex=[...loopset.entries()].filter(z => z[1].dat_LoopPosition == w).map(z=>z[0]);
+							if (winindex.length==0){continue};
+							//initiazation
+							var gd=0;
+							var nro=0;
+							var nri=0;
+							var pro=0;
+							var pri=0;
+							var rpd=0;
+							var srpd=0;
+							var rrt=0;
+							var trt=0;
+							var nof=0;
+							var mfd=0;
+							// //gd
+							gd= loopset[winindex[0]].dat_ReactionTime;
+							//nro & pro
+							var nrocount=0;
+							for (var m=0;m<winindex.length;m++){
+								if (loopset[winindex[m]+1]!=undefined && Number(loopset[winindex[m]+1].dat_LoopPosition)<Number(loopset[winindex[m]].dat_LoopPosition)){
+									nrocount=nrocount+1;
+								}
+							}
+							nro=nrocount;
+							pro=(nrocount/winindex.length).toFixed(4);
+							//nri & pri
+							var nricount=0;
+							for (var m=0;m<winindex.length;m++){
+								if (loopset[winindex[m]-1]!=undefined && Number(loopset[winindex[m]-1].dat_LoopPosition)>Number(loopset[winindex[m]].dat_LoopPosition)){
+									nricount=nricount+1;
+								}
+							}
+							nri=nricount;
+							pri=(nricount/winindex.length).toFixed(4);
+							//rpd & srpd
+							var rpdarray=new Array();
+							var srpdarray=new Array();
+							rpd=0;
+							srpd=0;
+							if (loopset[winindex[0]+1]==undefined||Number(loopset[winindex[0]+1].dat_LoopPosition)>=Number(loopset[winindex[0]].dat_LoopPosition)){
+								rpd=gd;
+								srpd=gd;
+							}else{
+								for (var m=0;m<winindex.length;m++){
+									if (m==0){srpdarray[srpdarray.length]=Number(loopset[winindex[m]].dat_ReactionTime);continue;};
+									if (loopset[winindex[m]+1]==undefined||Number(loopset[winindex[m]+1].dat_LoopPosition)>=Number(loopset[winindex[m]].dat_LoopPosition)){
+										rpdarray=loopset.slice(winindex[0],winindex[m]+1).map(z=>z.dat_ReactionTime).map(Number);
+										srpdarray[srpdarray.length]=Number(loopset[winindex[m]].dat_ReactionTime);
+										break;
+									}else{
+										srpdarray[srpdarray.length]=Number(loopset[winindex[m]].dat_ReactionTime);
+									}
+								}
+
+								rpd=rpdarray.reduce((a, b) => a + b, 0);
+								srpd=srpdarray.reduce((a, b) => a + b, 0);
+							}
+							//rrt
+							winset=loopset.filter(item => item.dat_LoopPosition == w).map(z=>z.dat_ReactionTime).map(Number);
+							trt=winset.reduce((a, b) => a + b, 0);
+							rrt=winset.slice(1,winset.length).reduce((a, b) => a + b, 0);
+							nof=winset.length
+							mfd=(trt/winset.length).toFixed(0);
+							//write
+							newset[newset.length]= new Object();
+							var rawlist=Object.keys(loopset[winindex[0]]);
+							for (var q in rawlist){
+								newset[newset.length-1][rawlist[q]]=loopset[winindex[0]][rawlist[q]];
+							}
+							newset[newset.length-1]["dat_GD"]=gd;
+							newset[newset.length-1]["dat_NRO"]=nro;
+							newset[newset.length-1]["dat_NRI"]=nri;
+							newset[newset.length-1]["dat_PRO"]=pro;
+							newset[newset.length-1]["dat_PRI"]=pri;
+							newset[newset.length-1]["dat_RPD"]=rpd;
+							newset[newset.length-1]["dat_SRPD"]=srpd;
+							newset[newset.length-1]["dat_RRT"]=rrt;
+							newset[newset.length-1]["dat_TRT"]=trt;
+							newset[newset.length-1]["dat_NOF"]=nof;
+							newset[newset.length-1]["dat_MFD"]=mfd;
+						}
+					}
+				}
+				// subset -> dataset
+				for (var i = 0;i<newset.length;i++){
+					dataset[dataset.length]=newset[i];
+				}
+				p=p+1;
+				if (p<datacsv.length){
+					indicesWindow();
+				}else{
+					var dt_string="";
+					var printlist=[];
+					for (var j=0;j<Object.keys(dataset[0]).length;j++){
+						if (excludedlist.indexOf(Object.keys(dataset[0])[j])<0){
+							printlist.push(Object.keys(dataset[0])[j]);
+						}
+					}
+
+					for (var j=0; j< printlist.length;j++){
+						dt_string=dt_string+printlist[j]+",";
+					}
+					dt_string=dt_string.slice(0,-1);
+					dt_string=dt_string+"\r\n";
+
+					for (var i=0;i<dataset.length;i++){
+						for (var j in printlist){
+							dt_string=dt_string+dataset[i][printlist[j]]+",";
+						}
+						dt_string=dt_string.slice(0,-1);
+						dt_string=dt_string+"\r\n";
+					}
+					download(dt_string, 'window_data.csv', '"text/csv"');
+				}
+			}
+		}
+
+
+		function dataarea(){
+			mode="area";
+			dataset=new Array();
+			datacsv=document.getElementById('datacsv').files;
+			lower=document.getElementById('threshold_a').value;
+			upper=document.getElementById('outlier_a').value;
+			excludedlist=["dat_ReactionTime","dat_Time","dat_WindowSequence","dat_Window","dat_LoopPosition","dat_AreaPosition"];
+			chosenlist=[document.getElementById('gd_a').checked,
+						document.getElementById('nro_a').checked,
+						document.getElementById('nri_a').checked,
+						document.getElementById('pro_a').checked,
+						document.getElementById('pri_a').checked,
+						document.getElementById('rpd_a').checked,
+						document.getElementById('srpd_a').checked,
+						document.getElementById('rrt_a').checked,
+						document.getElementById('trt_a').checked];
+			for (var i in chosenlist){
+				if (!chosenlist[i]){
+					excludedlist.push(alllist[i]);
+				}
+			}
+			p=0;
+			indicesArea();
+		}
+
+
+		function indicesArea(){
+			var reader = new FileReader();
+			var file = datacsv[p];
+			reader.readAsText(file);
+
+			reader.onload= function (e){
+				var rawset=new Array();
+				var subset = new Array();
+				var newset = new Array();
+				var csv2arr=e.target.result.split('\r\n'); //caution
+				//csv2arr.pop();
+				var csvcol=csv2arr[0].split(',');
+				//rawset generation
+				for (var i = 1; i <csv2arr.length; i++) {
+					var csvline=csv2arr[i].split(',');
+					rawset[i-1]=new Object();
+					for (var j = 0; j <csvcol.length; j++) {
+						rawset[i-1][csvcol[j]]=csvline[j];
+					}
+				}
+				for (var i=0;i<rawset.length;i++){
+					if (Number(rawset[i].dat_ReactionTime)>lower && Number(rawset[i].dat_ReactionTime)<upper){
+						subset[subset.length]=rawset[i];
+					}		
+				}
+				//indices calculation
+				var trialset= new Array();
+				var loopset= new Array();
+				var winindex= new Array();
+				var winset= new Array();
+				for (var k=1;k<=Math.max.apply(null, subset.map(z=>z.dat_Trial).map(Number));k++){
+					trialset= subset.filter(item => item.dat_Trial == k);
+					if (trialset.length==0){continue};
+					for (var l=1;l<=Math.max.apply(null, trialset.map(z=>z.dat_LoopNumber).map(Number));l++){
+						loopset= trialset.filter(item => item.dat_LoopNumber == l);
+						if (loopset.length==0){continue};
+						//area subset generation
+						var areaset=new Array();
+						var areaarray=new Array();
+						for (var a=0;a<loopset.length;a++){
+							 if (loopset[a+1]!=undefined && loopset[a+1].dat_AreaNumber==loopset[a].dat_AreaNumber){
+							 	areaarray[areaarray.length]=Number(loopset[a].dat_ReactionTime);
+							 }else{
+							 	areaarray[areaarray.length]=Number(loopset[a].dat_ReactionTime);
+							 	areaset[areaset.length]=loopset[a];
+							 	areaset[areaset.length-1]["dat_ReactionTime"]=areaarray.reduce((a, b) => a + b, 0);
+							 	areaarray=new Array();
+							 }
+						}
+						//area subset generation over
+						for (var w=1;w<=Math.max.apply(null, areaset.map(z=>z.dat_AreaNumber).map(Number));w++){
+							winindex=[...areaset.entries()].filter(z => z[1].dat_AreaNumber == w).map(z=>z[0]);
+							if (winindex.length==0){continue};
+							//initiazation
+							var gd=0;
+							var nro=0;
+							var nri=0;
+							var pro=0;
+							var pri=0;
+							var rpd=0;
+							var srpd=0;
+							var rrt=0;
+							var trt=0;
+							var nof=0
+							var mfd=0;
+							// //gd
+							gd= areaset[winindex[0]].dat_ReactionTime;
+							//nro & pro
+							var nrocount=0;
+							for (var m=0;m<winindex.length;m++){
+								if (areaset[winindex[m]+1]!=undefined && Number(areaset[winindex[m]+1].dat_AreaNumber)<Number(areaset[winindex[m]].dat_AreaNumber)){
+									nrocount=nrocount+1;
+								}
+							}
+							nro=nrocount;
+							pro=(nrocount/winindex.length).toFixed(4);
+							//nri & pri
+							var nricount=0;
+							for (var m=0;m<winindex.length;m++){
+								if (areaset[winindex[m]-1]!=undefined && Number(areaset[winindex[m]-1].dat_AreaNumber)>Number(areaset[winindex[m]].dat_AreaNumber)){
+									nricount=nricount+1;
+								}
+							}
+							nri=nricount;
+							pri=(nricount/winindex.length).toFixed(4);
+							//rpd & srpd
+							var rpdarray=new Array();
+							var srpdarray=new Array();
+							rpd=0;
+							srpd=0;
+							if (areaset[winindex[0]+1]==undefined||Number(areaset[winindex[0]+1].dat_AreaNumber)>Number(areaset[winindex[0]].dat_AreaNumber)){
+								rpd=gd;
+								srpd=gd;
+							}else{
+								for (var m=0;m<winindex.length;m++){
+									if (m==0){srpdarray[srpdarray.length]=Number(areaset[winindex[m]].dat_ReactionTime);continue;};
+									if (areaset[winindex[m]+1]==undefined||Number(areaset[winindex[m]+1].dat_AreaNumber)>Number(areaset[winindex[m]].dat_AreaNumber)){
+										rpdarray=areaset.slice(winindex[0],winindex[m]+1).map(z=>z.dat_ReactionTime).map(Number);
+										srpdarray[srpdarray.length]=Number(areaset[winindex[m]].dat_ReactionTime);
+										break;
+									}else{
+										srpdarray[srpdarray.length]=Number(areaset[winindex[m]].dat_ReactionTime);
+									}
+								}
+
+								rpd=rpdarray.reduce((a, b) => a + b, 0);
+								srpd=srpdarray.reduce((a, b) => a + b, 0);
+							}
+							//rrt
+							winset=areaset.filter(item => item.dat_AreaNumber == w).map(z=>z.dat_ReactionTime).map(Number);
+							trt=winset.reduce((a, b) => a + b, 0);
+							rrt=winset.slice(1,winset.length).reduce((a, b) => a + b, 0);
+							nof=winset.length
+							mfd=(trt/winset.length).toFixed(0);
+							//write
+							newset[newset.length]= new Object();
+							var rawlist=Object.keys(areaset[winindex[0]]);
+							for (var q in rawlist){
+								newset[newset.length-1][rawlist[q]]=areaset[winindex[0]][rawlist[q]];
+							}
+							newset[newset.length-1]["dat_GD"]=gd;
+							newset[newset.length-1]["dat_NRO"]=nro;
+							newset[newset.length-1]["dat_NRI"]=nri;
+							newset[newset.length-1]["dat_PRO"]=pro;
+							newset[newset.length-1]["dat_PRI"]=pri;
+							newset[newset.length-1]["dat_RPD"]=rpd;
+							newset[newset.length-1]["dat_SRPD"]=srpd;
+							newset[newset.length-1]["dat_RRT"]=rrt;
+							newset[newset.length-1]["dat_TRT"]=trt;
+							newset[newset.length-1]["dat_NOF"]=nof;
+							newset[newset.length-1]["dat_MFD"]=mfd;
+						}
+					}
+				}
+				// subset -> dataset
+				for (var i = 0;i<newset.length;i++){
+					dataset[dataset.length]=newset[i];
+				}
+				p=p+1;
+				if (p<datacsv.length){
+					indicesArea();
+				}else{
+					var dt_string="";
+					var printlist=[];
+					for (var j=0;j<Object.keys(dataset[0]).length;j++){
+						if (excludedlist.indexOf(Object.keys(dataset[0])[j])<0){
+							printlist.push(Object.keys(dataset[0])[j]);
+						}
+					}
+
+					for (var j=0; j< printlist.length;j++){
+						dt_string=dt_string+printlist[j]+",";
+					}
+					dt_string=dt_string.slice(0,-1);
+					dt_string=dt_string+"\r\n";
+
+					for (var i=0;i<dataset.length;i++){
+						for (var j in printlist){
+							dt_string=dt_string+dataset[i][printlist[j]]+",";
+						}
+						dt_string=dt_string.slice(0,-1);
+						dt_string=dt_string+"\r\n";
+					}
+					download(dt_string, 'Area_data.csv', '"text/csv"');
+				}
+			}
+		}
+
+
+		function dataacc(){
+			mode="acc";
+			dataset=new Array();
+			datacsv=document.getElementById('datacsv').files;
+			excludedlist=["dat_ReactionTime","dat_Time","dat_Window","dat_WindowSequence","dat_LoopNumber","dat_LoopPosition","dat_LoopSum","dat_AreaNumber","dat_AreaPosition","dat_AreaSum"];
+			p=0;
+			indicesACC();
+		}
+
+		function indicesACC(){
+
+
+			var reader = new FileReader();
+			var file = datacsv[p];
+			reader.readAsText(file);
+
+			reader.onload= function (e){
+				var rawset=new Array();
+				var subset = new Array();
+				var newset = new Array();
+				var csv2arr=e.target.result.split('\r\n'); //caution
+				//csv2arr.pop();
+				var csvcol=csv2arr[0].split(',');
+				//rawset generation
+				for (var i = 1; i <csv2arr.length; i++) {
+					var csvline=csv2arr[i].split(',');
+					rawset[i-1]=new Object();
+					for (var j = 0; j <csvcol.length; j++) {
+						rawset[i-1][csvcol[j]]=csvline[j];
+					}
+				}
+				for (var i=0;i<rawset.length;i++){
+					if (Number(rawset[i].dat_ReactionTime)>lower && Number(rawset[i].dat_ReactionTime)<upper){
+						subset[subset.length]=rawset[i];
+					}		
+				}
+				
+				//indices calculation
+				var trialset= new Array();
+				console.log(subset.map(z=>z.dat_Trial).map(Number))
+				for (var k=1;k<=Math.max.apply(null, subset.map(z=>z.dat_Trial).map(Number));k++){
+					trialset= subset.filter(item => item.dat_Trial == k);
+					if (trialset.length==0){continue};
+					newset[newset.length]=trialset[0];
+				}
+				// subset -> dataset
+				for (var i = 0;i<newset.length;i++){
+					dataset[dataset.length]=newset[i];
+				}
+				p=p+1;
+				if (p<datacsv.length){
+					indicesACC();
+				}else{
+					var dt_string="";
+					var printlist=[];
+					for (var j=0;j<Object.keys(dataset[0]).length;j++){
+						if (excludedlist.indexOf(Object.keys(dataset[0])[j])<0){
+							printlist.push(Object.keys(dataset[0])[j]);
+						}
+					}
+					for (var j=0; j< printlist.length;j++){
+						dt_string=dt_string+printlist[j]+",";
+					}
+					dt_string=dt_string.slice(0,-1);
+					dt_string=dt_string+"\r\n";
+
+					for (var i=0;i<dataset.length;i++){
+						for (var j in printlist){
+							dt_string=dt_string+dataset[i][printlist[j]]+",";
+						}
+						dt_string=dt_string.slice(0,-1);
+						dt_string=dt_string+"\r\n";
+					}
+					download(dt_string, 'ACC_data.csv', '"text/csv"');
+				}
+			}
+		}
+
+
+		function datamerge(){
+			mode="merge";
+			dataset=new Array();
+			datacsv=document.getElementById('datacsv').files;
+			p=0;
+			excludedlist=[];
+			lower=document.getElementById('threshold_m').value;
+			upper=document.getElementById('outlier_m').value;
+			indicesMerge();
+		}
+
+
+		function indicesMerge(){
+			var reader = new FileReader();
+			var file = datacsv[p];
+			reader.readAsText(file);
+
+			reader.onload= function (e){
+				var subset = new Array();
+				var newset = new Array();
+				var csv2arr=e.target.result.split('\r\n');
+				//csv2arr.pop();
+				var csvcol=csv2arr[0].split(',');
+				//rawset generation
+				for (var i = 1; i <csv2arr.length; i++) {
+					var csvline=csv2arr[i].split(',');
+					subset[i-1]=new Object();
+					for (var j = 0; j <csvcol.length; j++) {
+						subset[i-1][csvcol[j]]=csvline[j];
+					}
+				}
+				//indices calculation
+				for (var i=0;i<subset.length;i++){
+					if (Number(subset[i].dat_ReactionTime)>lower && Number(subset[i].dat_ReactionTime)<upper){
+						newset[newset.length]=subset[i];
+					}		
+				}
+				// subset -> dataset
+				for (var i = 0;i<newset.length;i++){
+					dataset[dataset.length]=newset[i];
+				}
+				p=p+1;
+				if (p<datacsv.length){
+					indicesMerge();
+				}else{
+					var dt_string="";
+					var printlist=[];
+					for (var j=0;j<Object.keys(dataset[0]).length;j++){
+						if (excludedlist.indexOf(Object.keys(dataset[0])[j])<0){
+							printlist.push(Object.keys(dataset[0])[j]);
+						}
+					}
+					for (var j=0; j< printlist.length;j++){
+						dt_string=dt_string+printlist[j]+",";
+					}
+					dt_string=dt_string.slice(0,-1);
+					dt_string=dt_string+"\r\n";
+
+					for (var i=0;i<dataset.length;i++){
+						for (var j in printlist){
+							dt_string=dt_string+dataset[i][printlist[j]]+",";
+						}
+						dt_string=dt_string.slice(0,-1);
+						dt_string=dt_string+"\r\n";
+					}
+					download(dt_string, 'Merge_data.csv', '"text/csv"');
+				}
+			}
+		}
+
+		function download(content, fileName, contentType) {
+		  var a = document.createElement("a");
+		  var file = new Blob([content], {type: contentType});
+		  a.href = URL.createObjectURL(file);
+		  a.download = fileName;
+		  a.click();
+		}
+	</script>
+</html>
