@@ -129,7 +129,7 @@ There is another important thing to check before export the CSV. Since CSV inter
 
 If you indicate any pictures (jpg,bmp,png) in instruction or stimuli, please put them into the `media` folder under  under  `FABrunning`.
 
-# FABrunning
+# FABrunning (run the task)
 For running your self-paced reading task, open `FABrunning.html` with the browser.
 
 - enter the subject ID 
@@ -140,7 +140,7 @@ Tips:
 - If you want to make it fullscreen, open the fullscreen mode according to your browser.
 - Terminate and save the incomplete data: `Shift+q`
 
-# FABanalysis
+# FABanalysis (analyze data)
 For cleaning data and generating eye-tracking like indices, open `FABanalysis.html` with the browser.
 
 - Choose data files of all participants by click `Choose Files` at the top of the website. **The column names should be identical for all files.**
