@@ -8,7 +8,7 @@ FAB is designed to run psychological or linguistic tasks that allow participants
 Based on website web languages (JavaScript, HTML, and CSS), FAB does not require you to install any special software on your own computer or computers used to run the experiments. All you need is a common web browser (e.g., Chrome or Firefox is recommended). Both task generation and data collection run locally by default, so the Internet connection is not required. Reach out for any question: gongtiw@gmail.com
 
 <img src="screenshot.gif" alt="screenshot" width="400"/>
-
+[screenshot](https://tianweigong.github.io/source_for_other_website/fab/screenshot.gif)
 
 # FABdesign (set up a task)
 For designing your self-paced reading task, please open `FABdesign.html` with the browser.
@@ -29,7 +29,7 @@ Adjust the color, font size, font styles for the text. The stimulus layout will 
 
 >Please choose how the stimuli should display.
 Differences between two display patterns are shown in the picture. Usually we choose `Moving window` option for linguistic experiments.
-[movingwindow](https://tianweigong.github.io/source_for_other_website/fab/movingwindow.png)
+[movingwindow](https://tianweigong.github.io/source_for_other_website/fab/movingwindow)
 
 
 >Please choose your segmentation rule (only for text stimuli option).
