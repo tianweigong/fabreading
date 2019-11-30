@@ -7,7 +7,7 @@ FAB is designed to run psychological or linguistic tasks that allow participants
 
 Based on website web languages (JavaScript, HTML, and CSS), FAB does not require you to install any special software on your own computer or computers used to run the experiments. All you need is a common web browser (e.g., Chrome or Firefox is recommended). Both task generation and data collection run locally by default, so the Internet connection is not required. Reach out for any question: gongtiw@gmail.com
 
-<p style="text-align:center;"><img src="https://tianweigong.github.io/source_for_other_website/fab/screenshot.gif" width="600"></p>
+<p align="center"><img src="https://tianweigong.github.io/source_for_other_website/fab/screenshot.gif" width="600"></p>
 
 # FABdesign (set up a task)
 For designing your self-paced reading task, please open `FABdesign.html` with the browser.
@@ -29,7 +29,7 @@ Adjust the color, font size, font styles for the text. The stimulus layout will 
 >Please choose how the stimuli should display.
 Differences between two display patterns are shown in the picture. Usually we choose `Moving window` option for linguistic experiments.
 
-<p style="text-align:center;"><img src="https://tianweigong.github.io/source_for_other_website/fab/movingwindow.png" width="600"></p>
+<p align="center"><img src="https://tianweigong.github.io/source_for_other_website/fab/movingwindow.png" width="600"></p>
 
 >Please choose your segmentation rule (only for text stimuli option).
 
@@ -97,7 +97,7 @@ Now you have finished the first part and can get the first “card” for FAB.
 
 Since almost all psycholinguistic researchers write their stimuli in spreadsheet software (e.g., Excel) firstly before conducting the experiment, FAB will just use the sheet to make stimulus file. Here is one example of valid stimulus list:
 
-<p style="text-align:center;"><img src="https://tianweigong.github.io/source_for_other_website/fab/stimulidemo.jpg" width="600"></p>
+<p align="center"><img src="https://tianweigong.github.io/source_for_other_website/fab/stimulidemo.jpg" width="600"></p>
 
 - `fab_stimuli` *necessary*: Add `/` at the beginning and the end of the stimuli (You can do it instantly, check here). Add `*` to separate stimuli into different regions, then FAB will support region analysis. If you want to add a fixation `+` at the beginning of sentences, but don't want participants to go back to the fixation later (see the demo above), you can rewrite the sentence as `/+/The old lady lived further away from the city center./`. Namely, `/` can help separate stimuli into different loops, where participants can only go back-and-forth within the loop.
 
@@ -150,7 +150,7 @@ For cleaning data and generating eye-tracking like indices, open `FABanalysis.ht
 
 The definition of indices are similar to eye-tracking tasks. Here we use an example to describe them.
 
-<p style="text-align:center;"><img src="https://tianweigong.github.io/source_for_other_website/fab/indexdemo.jpg" width="600"></p>
+<p align="center"><img src="https://tianweigong.github.io/source_for_other_website/fab/indexdemo.jpg" width="600"></p>
 
 ## Window-based Indices
 - `Gazes` is defined as the single dwelling time in any given window. In this demo, we set the outlier as gazes below 80 ms or beyond 5000 ms. We firstly took a look at the indices in the window level. 
