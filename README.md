@@ -7,14 +7,13 @@ FAB is designed to run psychological or linguistic tasks that allow participants
 
 Based on website web languages (JavaScript, HTML, and CSS), FAB does not require you to install any special software on your own computer or computers used to run the experiments. All you need is a common web browser (e.g., Chrome or Firefox is recommended). Both task generation and data collection run locally by default, so the Internet connection is not required. Reach out for any question: gongtiw@gmail.com
 
-<img src="screenshot.gif" alt="screenshot" width="400"/>
-[screenshot](https://tianweigong.github.io/source_for_other_website/fab/screenshot.gif)
+<img src="https://tianweigong.github.io/source_for_other_website/fab/screenshot.gif">
 
 # FABdesign (set up a task)
 For designing your self-paced reading task, please open `FABdesign.html` with the browser.
 
 ## Part 1: Create Your Parameter File
-## Step1: The Stimuli Setting
+### Step1: The Stimuli Setting
 > Please choose the type of stimuli.
 
 Choose `picture` if you *only* use pictures in the experiments, otherwise choose the text. The difference between the two is that `text`  will trigger two extra divisions to adjust the text layout and the segmentation pattern.
@@ -29,8 +28,8 @@ Adjust the color, font size, font styles for the text. The stimulus layout will 
 
 >Please choose how the stimuli should display.
 Differences between two display patterns are shown in the picture. Usually we choose `Moving window` option for linguistic experiments.
-[movingwindow](https://tianweigong.github.io/source_for_other_website/fab/movingwindow)
 
+<img src="https://tianweigong.github.io/source_for_other_website/fab/movingwindow.png">
 
 >Please choose your segmentation rule (only for text stimuli option).
 
@@ -39,7 +38,7 @@ There are three ways to segment the stimuli sequences. You should choose here an
 - **by character:** for character-based languages. If you write sentence `很高兴认识你。`, it will display `很`, `高`, `兴`, `认`, `识`, `你。` The punctuations `。`, `，` , `、`, `？`, `！`, `：`, `；` will be displayed together with the last character rather than independently.
 - **by '|', customized:** for other segmentation rule.
 
-## Step 2: The Keyboard Setting
+### Step 2: The Keyboard Setting
 
 >Do you allow participants to go back during the learning process?
 
@@ -49,13 +48,13 @@ If you choose yes, participants will be able to go back-and-forth during the tas
 
 After considering the forward/backward response key, you can press it, check its information in the `key cube`(at lower right), and then click `save it as forward key` or `save it as backward key` to save it. If you want to make a change, you can press another key and click the button again. The keyboard information is compatible since different browsers use same key code, that is, you are confident to tell participants to press say "J " key, whenever they are using IOS or Windows, Safari or Chrome, etc. However, the physical positions might differ among keyboards.
 
-## Step 3: Instruction
+### Step 3: Instruction
 
 >Do you want a special layout for instruction?
 
 If you choose `yes`, you can set up a special layout for instruction part. The instruction content will be designed in the CSV file together with your stimuli.
 
-## Step 4: Comprehension Questions and Feedbacks
+### Step 4: Comprehension Questions and Feedbacks
 
 >Do you have any comprehension question for participants?
 
@@ -79,11 +78,11 @@ You can give feedback to participants. **After receiving the feedback, participa
 
 If you want to give feedback only for some special trials (for practical trials), you can choose `yes` here and then set up an extra column `fab_feedback` in CSV file (see details later).
 
-## Step 5: The "End of Experiment" Message
+### Step 5: The "End of Experiment" Message
 
 Here you can input the message you want to show when participants finish the task. All other instructions or breaks could be set later in CSV file (see details later).
 
-## Step 6: Download the Parameter File
+### Step 6: Download the Parameter File
 
 Now you have finished the first part and can get the first “card” for FAB. 
 
@@ -94,12 +93,11 @@ Now you have finished the first part and can get the first “card” for FAB.
 
 ## Part 2: Create Your Stimulus File
 
-## Step 1: Create and Check Your CSV File
+### Step 1: Create and Check Your CSV File
 
 Since almost all psycholinguistic researchers write their stimuli in spreadsheet software (e.g., Excel) firstly before conducting the experiment, FAB will just use the sheet to make stimulus file. Here is one example of valid stimulus list:
 
-[stimulidemo](https://tianweigong.github.io/source_for_other_website/fab/stimulidemo.jpg)
-
+<img src="https://tianweigong.github.io/source_for_other_website/fab/stimulidemo.jpg">
 
 - `fab_stimuli` *necessary*: Add `/` at the beginning and the end of the stimuli (You can do it instantly, check here). Add `*` to separate stimuli into different regions, then FAB will support region analysis. If you want to add a fixation `+` at the beginning of sentences, but don't want participants to go back to the fixation later (see the demo above), you can rewrite the sentence as `/+/The old lady lived further away from the city center./`. Namely, `/` can help separate stimuli into different loops, where participants can only go back-and-forth within the loop.
 
@@ -115,12 +113,12 @@ Since almost all psycholinguistic researchers write their stimuli in spreadsheet
 
 - `list`, `block`, `condition`: You can add other columns. The information will not be used in FAB but will appear in the dataset, which may benefit data analysis.
 
-### Notes for Your CSV File
+#### Notes for Your CSV File
 All keywords starting with `fab_` are case-sensitive so make sure you give right names.
 
 There is another important thing to check before export the CSV. Since CSV interpret the English comma as a default delimiter, we cannot include any English comma in the cells, or the delimiter process would go wrong. This sounds ridiculous for linguistic tasks but there is really an easy way to solve it. Just find all `,` and replace with `&#44`, a code for the English comma in HTML. Participants will see commas as usual in the experiment.
 
-## Step 2: Compile Your CSV File
+### Step 2: Compile Your CSV File
 
 - Export the sheet as CSV in your spreadsheet software.
 - Upload the CSV by click `Choose File`. 
@@ -152,7 +150,7 @@ For cleaning data and generating eye-tracking like indices, open `FABanalysis.ht
 
 The definition of indices are similar to eye-tracking tasks. Here we use an example to describe them.
 
-[indexdemo](https://tianweigong.github.io/source_for_other_website/fab/indexdemo.jpg)
+<img src="https://tianweigong.github.io/source_for_other_website/fab/indexdemo.jpg">
 
 ## Window-based Indices
 - `Gazes` is defined as the single dwelling time in any given window. In this demo, we set the outlier as gazes below 80 ms or beyond 5000 ms. We firstly took a look at the indices in the window level. 
@@ -188,8 +186,7 @@ check the following things for debugging :bug:
 ## How to link the picture stimuli/instructions/questions to stimulus list?
 - For instructions, you can input the picture name (e.g., `ins1.jpg`) in the cell directly.
 - For stimuli, you can write in these way: `/ram.jpg goat.jpg beetle.jpg/` or `/There is a picture1.jpg in my room./` (and choose `by space` as segmentation in `FABdesign.html`)
-- For questions, you can input the question name (e.g., `question1.jpg`) in the cell directly. If you want to combine words and pictures in your questions, you need to add HTML code, but that is easy, just write in this way: `Did you see this object in the previous sentence?<br><img src='media/picture1.jpg'>` (`<br>` is for )
-## 
+- For questions, you can input the question name (e.g., `question1.jpg`) in the cell directly. If you want to combine words and pictures in your questions, you need to add HTML code, but that is easy, just write in this way: `Did you see this object in the previous sentence?<br><img src='media/picture1.jpg'>` (`<br>` is for line breaking).
 
 ## Could FAB randomize my trial order?
 FAB does not have the function to randomize the presentation of your trial, for you might have constraints that the automatic procedure cannot satisfy (e.g., three trials from the same condition cannot be present continuously; there should not be continuous four "yes" answers for the comprehension questions). Therefore, the best way for you is to make different randomized stimulus lists yourself, and add one  `list` column to indicate that.
@@ -199,5 +196,3 @@ Yes. Just add one blank row, input `fab_instruction` cell, and leave other cell 
 
 - If you want to add continuous two pages of instructions, you can add one 
 - not randomize function
-
-## To Be Continued
