@@ -402,7 +402,7 @@
 
 		  if (exp.sti_display[1]){
 		    for (var i=0; i<stipre.length; i++) {
-		      if(ext.exec(stipre[i])[1]!=undefined && imglist.indexOf(ext.exec(stipre[i])[1]>=0)){
+		      if(ext.exec(stipre[i])[1]!=undefined && imglist.indexOf(ext.exec(stipre[i])[1])>=0){
 		        sti_string=sti_string+"<p class='sti_p' id=word"+i+"><img src='media/"+stipre[i]+"'></p>";//caution!
 		      }else{
 		        sti_string=sti_string+"<p class='sti_p' id=word"+i+">"+stipre[i]+spacelist[Number(exp.sti_pace[0]*exp.sti_type[0])]+"</p>";//caution!

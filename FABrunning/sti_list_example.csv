@@ -1,0 +1,8 @@
+list,fab_key,fab_stimulus,fab_question,fab_qwait,fab_instruction,fab_feedback,block,trial
+,,,,,forward key: Space. Yes key: J. No key: F.,,,
+1,Y,/+/An egg was in the fridge./,did you see the object mentioned in the previous sentence?<br><img src='media/egginpan.bmp'>,500,ready to go?,1,0,0
+1,N,,did you see a  <b>fridge</b> in the picture?,900,,1,0,0
+1,Y,,did you see a  <b>fridge</b> in the sentence?,100,,1,0,0
+1,N,/+/The visitors knew little about how the painting was created./,Did the visitors know how the painting was created?,100,,0,1,1
+1,Y,/+/There was a big hole in the road which blocked the traffic./,Was there a big hole in the road?,200,,0,1,2
+1,N,/+/The girl's life was saved because the doctor acted so well./,Did the girl die?,100,,0,1,3

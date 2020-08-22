@@ -2,7 +2,7 @@
  A dummy’s program for self-paced forward and backward reading.
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](https://opensource.org/licenses/MIT)
- 
+
 FAB is designed to run psychological or linguistic tasks that allow participants to go through sequential stimuli on their own paces, with reaction time recorded. The primary goal of FAB is to provide a free and handy instrument which simulate the eye-tracking process to explore the mechanism of human cognition. At the same time, the flexibility of FAB also enable it to carry other psychological experiments (e.g., Stroop, IAT, mental rotation, perceptual simulation, and stimuli display for developmental experiments).
 
 Based on website web languages (JavaScript, HTML, and CSS), FAB does not require you to install any special software on your own computer or computers used to run the experiments. All you need is a common web browser (e.g., Chrome or Firefox is recommended). Both task generation and data collection run locally by default, so the Internet connection is not required. Reach out for any question: gongtiw@gmail.com
@@ -95,6 +95,8 @@ Now you have finished the first part and can get the first “card” for FAB.
 
 ### Step 1: Create and Check Your CSV File
 
+_(you can get more examples of stimuli lists at https://github.com/tianweigong/fabreading_validationEXP)_
+
 Since almost all psycholinguistic researchers write their stimuli in spreadsheet software (e.g., Excel) firstly before conducting the experiment, FAB will just use the sheet to make stimulus file. Here is one example of valid stimulus list:
 
 <p align="center"><img src="https://tianweigong.github.io/source_for_other_website/fab/stimulidemo.jpg" width="600"></p>
@@ -174,9 +176,6 @@ The previous measures were adopted from global eye-tracking measures. Besides, F
 ## Area-level Indices
 In order to conducted analysis on the area level, FAB would remove the gaze outliers and then merge all gazes by areas as showed in the figure. After that, FAB treats areas as windows and calculates all indices following the same ways mentioned above.
 
-# Online Experiment
-To be continued
-
 # FAQ
 ## Why my `Fabrunning.html` crushes?
 check the following things for debugging :bug:
@@ -192,4 +191,11 @@ check the following things for debugging :bug:
 FAB does not have the function to randomize the presentation of your trial, for you might have constraints that the automatic procedure cannot satisfy (e.g., three trials from the same condition cannot be present continuously; there should not be continuous four "yes" answers for the comprehension questions). Therefore, the best way for you is to make different randomized stimulus lists yourself, and add one  `list` column to indicate that.
 
 ## Could FAB display multiple pages of instructions?
-Yes. Just add one blank row, input things on `fab_instruction` cell, and leave other cell empty.
+Yes. Just add one blank row, input things on `fab_instruction` cell, and leave other cell empty. See Examples here: https://github.com/tianweigong/fabreading_validationEXP/blob/master/study3/procedure/sti_list_v1.csv
+
+## How to use FAB for online experiments?
+
+So far FAB does not have its own web server. We recommend researchers to use Google Drive+Forms for online experiments at the current stage.
+
+1. Compress the procedure folder and upload it to [Google Drive]( https://www.google.com/drive/) , then you can get the link of procedure and share it to participants afterward.
+2. Create a [Google Form]( https://docs.google.com/forms/), add contents, demographic questions, etc. Paste the google drive link of your procedure for participants to download. And finally add one file-upload question for partcipants to send their data back.
