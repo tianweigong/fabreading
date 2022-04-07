@@ -71,7 +71,6 @@
 		<div class="question_hint">IMPORTANT: please make sure all data files have the same structures (column names).</div>
 		<input type="file" id="datacsv" name="datacsv" accept=".csv" multiple="multiple">
 		</div>
-
 		<form id="form1" onsubmit="datawindow();return false">
 		<div class="part">Data processing by windows.</div>
 		<div class="question">1.Click the indices.</div>
@@ -91,6 +90,7 @@
 
 		<div class="question">3.Click the button to save the data processing file.</div>
 		<div><input type="submit" id="submit_botton1" value="save the data processing file"></div> 
+		<div id='datawindow_hint' style="display: none;">Data is processing...</div>
 		</form>
 
 		<form id="form2" onsubmit="dataarea();return false">
@@ -113,12 +113,14 @@
 
 		<div class="question">3.Click the button to save the data processing file.</div>
 		<div><input type="submit" id="submit_botton2" value="save the data processing file"></div> 
+		<div id='dataarea_hint' style="display: none;">Data is processing...</div>
 		</form>
 
 		<form id="form3" onsubmit="dataacc();return false">
 		<div class="part">Accuracy for each trial.</div>
 		<div class="question_hint">Click the button to save the accuracy processing file for each trial.</div>
 		<div><input type="submit" id="submit_botton3" value="save the accuracy file"></div> 
+		<div id='dataacc_hint' style="display: none;">Data is processing...</div>
 		</form>
 
 		<form id="form4" onsubmit="datamerge();return false">
@@ -127,6 +129,7 @@
 		<div>When merge the data from different participants, we will delete the recording with reaction time less than <input type="number" id="threshold_m" name="threshold_m" value="0"> ms or more than <input type="number" id="outlier_m" name="outlier_m" value="99999999"> ms.</div> 
 		<div class="question">2.Click the button to save the merged data file.</div>
 		<div><input type="submit" id="submit_botton3" value="save the merged file"></div> 
+		<div id='datamerge_hint' style="display: none;">Data is processing...</div>
 		</form>
 
 		<div style="margin-top: 60px"></div>
@@ -144,9 +147,11 @@
 		var chosenlist=[];
 		var excludedlist=[];
 		function datawindow(){
+			document.getElementById('datawindow_hint').style.display='block';
 			mode="window";
 			dataset=new Array();
 			datacsv=document.getElementById('datacsv').files;
+			if (datacsv.length==0){alert("There is no dataset!")};
 			lower=document.getElementById('threshold_w').value;
 			upper=document.getElementById('outlier_w').value;
 			excludedlist=["dat_ReactionTime","dat_Time","dat_WindowSequence"];
@@ -310,6 +315,8 @@
 				for (var i = 0;i<newset.length;i++){
 					dataset[dataset.length]=newset[i];
 				}
+				if (dataset.length==0){alert("There is no valid dataset!");}
+				document.getElementById('datawindow_hint').style.display='none';
 				p=p+1;
 				if (p<datacsv.length){
 					indicesWindow();
@@ -336,15 +343,18 @@
 						dt_string=dt_string+"\r\n";
 					}
 					download(dt_string, 'window_data.csv', '"text/csv"');
+					document.getElementById('datawindow_hint').style.display='none';
 				}
 			}
 		}
 
 
 		function dataarea(){
+			document.getElementById('dataarea_hint').style.display='block';
 			mode="area";
 			dataset=new Array();
 			datacsv=document.getElementById('datacsv').files;
+			if (datacsv.length==0){alert("There is no dataset!")};
 			lower=document.getElementById('threshold_a').value;
 			upper=document.getElementById('outlier_a').value;
 			excludedlist=["dat_ReactionTime","dat_Time","dat_WindowSequence","dat_Window","dat_LoopPosition","dat_AreaPosition"];
@@ -505,6 +515,8 @@
 				for (var i = 0;i<newset.length;i++){
 					dataset[dataset.length]=newset[i];
 				}
+				if (dataset.length==0){alert("There is no valid dataset!");}
+				document.getElementById('dataarea_hint').style.display='none';
 				p=p+1;
 				if (p<datacsv.length){
 					indicesArea();
@@ -531,15 +543,18 @@
 						dt_string=dt_string+"\r\n";
 					}
 					download(dt_string, 'Area_data.csv', '"text/csv"');
+					document.getElementById('dataarea_hint').style.display='none';
 				}
 			}
 		}
 
 
 		function dataacc(){
+			document.getElementById('dataacc_hint').style.display='block';
 			mode="acc";
 			dataset=new Array();
 			datacsv=document.getElementById('datacsv').files;
+			if (datacsv.length==0){alert("There is no dataset!")};
 			excludedlist=["dat_ReactionTime","dat_Time","dat_Window","dat_WindowSequence","dat_LoopNumber","dat_LoopPosition","dat_LoopSum","dat_AreaNumber","dat_AreaPosition","dat_AreaSum"];
 			p=0;
 			indicesACC();
@@ -585,6 +600,8 @@
 				for (var i = 0;i<newset.length;i++){
 					dataset[dataset.length]=newset[i];
 				}
+				if (dataset.length==0){alert("There is no valid dataset!");}
+				document.getElementById('dataacc_hint').style.display='none';
 				p=p+1;
 				if (p<datacsv.length){
 					indicesACC();
@@ -610,15 +627,18 @@
 						dt_string=dt_string+"\r\n";
 					}
 					download(dt_string, 'ACC_data.csv', '"text/csv"');
+					document.getElementById('dataacc_hint').style.display='none';
 				}
 			}
 		}
 
 
 		function datamerge(){
+			document.getElementById('datamerge_hint').style.display='block';
 			mode="merge";
 			dataset=new Array();
 			datacsv=document.getElementById('datacsv').files;
+			if (datacsv.length==0){alert("There is no dataset!")};
 			p=0;
 			excludedlist=[];
 			lower=document.getElementById('threshold_m').value;
@@ -656,6 +676,9 @@
 				for (var i = 0;i<newset.length;i++){
 					dataset[dataset.length]=newset[i];
 				}
+				if (dataset.length==0){alert("There is no valid dataset!");}
+				document.getElementById('datamerge_hint').style.display='none';
+
 				p=p+1;
 				if (p<datacsv.length){
 					indicesMerge();
@@ -681,6 +704,7 @@
 						dt_string=dt_string+"\r\n";
 					}
 					download(dt_string, 'Merge_data.csv', '"text/csv"');
+					document.getElementById('datamerge_hint').style.display='none';
 				}
 			}
 		}

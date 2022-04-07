@@ -1,0 +1,13 @@
+﻿list,exp,trial,con,fab_stimulus,fab_question,fab_key,qtype,id,fab_instruction
+,,,,,,,,,ins1.jpg
+,,,,,,,,,ins2.jpg
+1,prac,0.1,prac,/Ready? (the backward key: 'O'; the forward key: 'P')<br>/Harry's girlfriend turned down his invitation. |He decided not to go out with her any more./,Was Harry turned down by his girlfriend? <br>('O' for no; 'P' for yes),Y,prac,prac1,ins3.jpg
+1,prac,0.2,prac,/Ready? (the backward key: 'O'; the forward key: 'P')<br>/Hoping to buy a new tent&#44 the smart brothers saved the money. |They kept it in their bedroom./,Did the brothers keep the money in their kitchen?<br>('O' for no; 'P' for yes),N,prac,prac2,
+1,prac,0.3,prac,/Ready? (the backward key: 'O'; the forward key: 'P')<br>/John came back home from the city a while ago. |Frantically he searched through the medicine cabinet./,Did John search through the medicine cabinet?<br>('O' for no; 'P' for yes),Y,prac,prac3,
+1,prac,0.4,prac,/Ready? (the backward key: 'O'; the forward key: 'P')<br>/The college student knew she was not ready for the test | she was going to take early Monday./,Did the college student know she was not ready for the class?<br>('O' for no; 'P' for yes),N,prac,prac4,
+1,prac,0.5,prac,/Ready? (the backward key: 'O'; the forward key: 'P')<br>/Lisa wanted to live closer to her new office. |She opened the paper to the apartment listing./,Did Lisa open the paper to hunt a new job?<br>('O' for no; 'P' for yes),N,prac,prac5,
+1,b,1,MIN,/Ready? (the backward key: 'O'; the forward key: 'P')<br>/The paramedics ran out of the hospital |very quickly and went to the scene of the car crash./,Did the paramedics go to the location of the car crash?<br>('O' for no; 'P' for yes),Y,second,b_15,ins4.jpg
+1,a,2,non_causal,/Ready? (the backward key: 'O'; the forward key: 'P')<br>/Tony sat under a tree reading a good book. |He walked home&#44 soaking wet&#44 to change his clothes./,Did Tony sit under a tree reading a book?<br>('O' for no; 'P' for yes),Y,first,a_7,
+1,b,3,SNT,/Ready? (the backward key: 'O'; the forward key: 'P')<br>/The taxidermist stuffed a variety of small animals. |Most of them had been hunting trophies./,Did the taxidermist stuff a variety of dolls?<br>('O' for no; 'P' for yes),N,first,b_8,
+1,a,4,causal,/Ready? (the backward key: 'O'; the forward key: 'P')<br>/Rose was attacked by a man in her apartment. |She found herself too frightened to move./,Did Rose find herself too frightened to speak?<br>('O' for no; 'P' for yes),N,second,a_13,
+1,a,5,causal,/Ready? (the backward key: 'O'; the forward key: 'P')<br>/Richard was invited to Karen's birthday party. |He spent a whole day shopping for the present./,Did Richard spend a whole day shopping?<br>('O' for no; 'P' for yes),Y,second,a_16,

@@ -1,0 +1,14 @@
+fab_key,fab_stimulus,fab_question,fab_instruction,fab_feedback,fab_qwait,block,trial,color,word,condition
+B,PressSpaceKeyToBegin,<img src='media/blue_blue.jpeg'><br><b>'D'</b> for Red&#44 <b>'F'</b> for Yellow&#44 <b>'J'</b> for Blue&#44 <b>'K'</b> for Green,Press the key for color you see (and ignore the word),1,500,Practice,p1,blue,blue,consistent
+Y,,<img src='media/yellow_yellow.jpeg'><br><b>'D'</b> for Red&#44 <b>'F'</b> for Yellow&#44 <b>'J'</b> for Blue&#44 <b>'K'</b> for Green,,1,600,Practice,p2,yellow,yellow,consistent
+G,,<img src='media/yellow_green.jpeg'><br><b>'D'</b> for Red&#44 <b>'F'</b> for Yellow&#44 <b>'J'</b> for Blue&#44 <b>'K'</b> for Green,,1,400,Practice,p3,green,yellow,inconsistent
+R,,<img src='media/green_red.jpeg'><br><b>'D'</b> for Red&#44 <b>'F'</b> for Yellow&#44 <b>'J'</b> for Blue&#44 <b>'K'</b> for Green,,1,500,Practice,p4,red,green,inconsistent
+B,PressSpaceKeyToBegin,blue_blue.jpeg,Well done! You have finished the practice.,0,600,Formal,F1,blue,blue,consistent
+R,,green_red.jpeg,,0,300,Formal,F2,red,green,inconsistent
+Y,,yellow_yellow.jpeg,,0,700,Formal,F3,yellow,yellow,consistent
+B,,red_blue.jpeg,,0,500,Formal,F4,blue,red,inconsistent
+G,,yellow_green.jpeg,,0,400,Formal,F5,green,yellow,inconsistent
+G,,green_green.jpeg,,0,500,Formal,F6,green,green,consistent
+Y,,blue_yellow.jpeg,,0,300,Formal,F7,yellow,blue,inconsistent
+R,,red_red.jpeg,,0,500,Formal,F8,red,red,consistent
+,,,,,,,,,,

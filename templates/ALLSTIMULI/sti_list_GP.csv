@@ -1,0 +1,13 @@
+﻿list,display_order,type,id,con,fab_stimulus,fab_question,fab_key,fab_instruction,fab_feedback
+2,p1,practice,practice_1,,/+/The patient listened to the doctor's advice after he felt hopeless./,Did the patient follow the doctor?,Y,ins.jpg,1
+2,p2,practice,practice_2,,/+/The visitors knew little about how the painting was created./,Did the visitors know how the painting was created?,N,,1
+2,p3,practice,practice_3,,/+/The old lady lived further away from the city center./,Did the old lady live in the city center?,N,,1
+2,p4,practice,practice_4,,/+/The maid looked at the hostess with a nervous smile./,Did the maid feel nervous? ,Y,,1
+2,p5,practice,practice_5,,/+/The young lady * sent a red rose * became * really embarrassed./,Did the lady send a red rose?,N,,1
+2,p6,practice,practice_6,,/+/The busy workers * who were * offered a delicious pizza * felt * not so hungry./,Did someone offer the workers a pizza?,Y,,1
+2,1,filler,filler_6,,/+/The girl sang very well through learning experiences from her tutor./,Did the girl's tutor do a lot of help? ,Y,Well done! You have finished the practice and now you can start the formal task.,0
+2,2,filler,filler_7,,/+/Some important papers which lay in the office were stolen last night./,Were the papers still safe?,N,,0
+2,3,target,target_1,C,/+/The cotton farmers * who were * warned about the bad floods * had * no other crops./,Did the farmers warn about the floods?,N,,0
+2,4,filler,filler_10,,/+/There was a big hole in the road which blocked the traffic./,Was there a big hole in the road?,Y,,0
+2,5,target,target_2,G,/+/The sunburned boys * served the hot dogs * got * a stomach ache./,Did the boys serve the hot dogs?,N,,0
+2,6,filler,filler_17,,/+/The students who failed the exam were asked to take it again./,Should all students take the exam again?,N,,0
