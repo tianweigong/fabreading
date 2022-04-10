@@ -42,26 +42,26 @@
 <body>
 	<div id="exp_begin"><form id="sub_id_submit" onsubmit="expbegin();return false">Subject ID: <input type="text" id="sub_id"> </br>click this button to begin the experiment: &nbsp<input type="submit" id="exp_begin_button" value="next->"></form></div>
 
-	<div id="instruction">
+	<div id="instruction" style="display: none;">
 		<div id="ins_word"></div>
 		<div id="ins_continue"><button type='button' id='ins_continue_button' onclick='trialbegin()'>next-></button></div>
 	</div>
-	<div id="stimuli">
-		<div id="sti_frame">
-			<div id="sti_word"></div>
+	<div id="stimuli" style="display: none;">
+		<div id="sti_frame" style="display: none;">
+			<div id="sti_word" style="display: none;"></div>
 		</div>
 		
-		<div id="q_frame">
-			<div id="q_word"></div> 
-			<form id="q_input" onsubmit="qinput();return false">
+		<div id="q_frame" style="display: none;">
+			<div id="q_word" style="display: none;"></div> 
+			<form id="q_input"  style="display: none;"onsubmit="qinput();return false">
 				<input type="text" name="q_input_ans" id="q_input_ans" required="required">
 				<input type="submit" id="q_input_botton" value="submit">
 			</form>
-			<div id="q_feedback"></div>
+			<div id="q_feedback" style="display: none;"></div>
 		</div>
 	</div>
 
-	<div id="byebye">
+	<div id="byebye" style="display: none;">
 		<div id="byeword"></div>
 		<form id="submitform" onsubmit="datasave();return false">
 		<button type="submit">save the data again</button>
@@ -70,6 +70,11 @@
 	</div>
 </body>
 	<script defer="defer" type="text/javascript" charset="utf-8">
+		//copy your exp.js and sti.js code here:
+
+
+		//the end of exp.js and sti.js code
+
 		//intialization
 		var display_time=0;
 		var response_time=0;
@@ -97,100 +102,98 @@
 		var dt_string="";
 		var sti_string="";
 		var sub_id="";
-		var qwait=exp.q_delay;
 		var fbmark=0;
-		if (sti.fab_feedback==undefined){
-		  fbmark=1;
-		}//see if feedback was defined in csv
-		//result variables
+		var qwait=undefined;
+
+		var ext= /(?:\.([^.]+))?$/;
+		var imglist=["jpg","JPG","jpeg","JPEG","bmp","BMP"];
+		var pctlist=["。","，","、","？","！","：","；"];
 		var rtlist=["dat_Window","dat_WindowSequence","dat_LoopNumber","dat_LoopPosition","dat_LoopSum","dat_AreaNumber","dat_AreaPosition","dat_AreaSum","dat_ReactionTime","dat_Time"];
 		var anslist=["dat_Ans","dat_AnsReactionTime","dat_Accuracy"];
 		var spacelist=[""," "];
 		var dtlist=rtlist.concat(anslist);
-		var userlist=Object.keys(sti);
-		for (var i=0;i<dtlist.length;i++){
-		  dttemp[dtlist[i]]=[];
-		};
-		var ext= /(?:\.([^.]+))?$/;
-		var imglist=["jpg","JPG","jpeg","JPEG","bmp","BMP"];
-		var pctlist=["。","，","、","？","！","：","；"];
+		var userlist=undefined;
 
-		//layout setting
-		document.body.style.background = exp.bg_color;
-		document.getElementById("stimuli").style.paddingLeft=Number(exp.margin[0])+"%";
-		document.getElementById("stimuli").style.paddingRight=Number(exp.margin[1])+"%";
-		document.getElementById('sti_frame').style.width = Number(100-Number(exp.margin[0])-Number(exp.margin[1]))+"%";
-		document.getElementById('q_frame').style.width = Number(100-Number(exp.margin[0])-Number(exp.margin[1]))+"%";
-		if (exp.sti_display[1]){
-		  document.getElementById("sti_frame").style.height="1%";
-		  document.getElementById("sti_frame").style.top=Number(exp.margin[2])+"%";
-		  document.getElementById("q_frame").style.top=Number(exp.margin[2])+"%";
-		}
-		if (exp.sti_display[1] && !(exp.q_position[0])){
-		  document.getElementById('q_frame').style.top="50%";
-		  document.getElementById('q_frame').style.transform="translateY(-50%)";
-		  document.getElementById('q_frame').style.textAlign = "center";
-		}
-		if (exp.sti_display[0]){
-		  document.getElementById("sti_frame").style.top="50%";
-		  document.getElementById("sti_frame").style.transform="translateY(-50%)";
-		  document.getElementById('sti_frame').style.textAlign = "center"; 
-
-		  document.getElementById('q_frame').style.top="50%";
-		  document.getElementById('q_frame').style.transform="translateY(-50%)";
-		  document.getElementById('q_frame').style.textAlign = "center"; 
-		}
-		document.getElementById('sti_word').style.color = exp.word_color;
-		document.getElementById('sti_word').style.fontFamily = exp.word_font;
-		document.getElementById('sti_word').style.fontSize = exp.word_size+"px";
-		if (exp.word_style[0]){document.getElementById('sti_word').style.fontWeight = "bold";};
-		if (exp.word_style[1]){document.getElementById('sti_word').style.fontStyle = "italic";};
-		if (exp.word_style[2]){document.getElementById('sti_word').style.textDecoration = "underline";};
-		document.getElementById('exp_begin').style.color = exp.i_color;
-		document.getElementById('exp_begin').style.fontFamily = exp.i_font;
-		document.getElementById('exp_begin').style.fontSize = exp.i_size+"px";
-		if (exp.i_style[0]){document.getElementById('exp_begin').style.fontWeight = "bold";};
-		if (exp.i_style[1]){document.getElementById('exp_begin').style.fontStyle = "italic";};
-		if (exp.i_style[2]){document.getElementById('exp_begin').style.textDecoration = "underline";};
-		document.getElementById('byebye').style.color = exp.i_color;
-		document.getElementById('byebye').style.fontFamily = exp.i_font;
-		document.getElementById('byebye').style.fontSize = exp.i_size+"px";
-		document.getElementById('byeword').innerHTML=exp.byeword;
-		if (exp.i_style[0]){document.getElementById('byebye').style.fontWeight = "bold";};
-		if (exp.i_style[1]){document.getElementById('byebye').style.fontStyle = "italic";};
-		if (exp.i_style[2]){document.getElementById('byebye').style.textDecoration = "underline";};
-		document.getElementById('instruction').style.color = exp.i_color;
-		document.getElementById('instruction').style.fontFamily = exp.i_font;
-		document.getElementById('instruction').style.fontSize = exp.i_size+"px";
-		if (exp.i_style[0]){document.getElementById('instruction').style.fontWeight = "bold";};
-		if (exp.i_style[1]){document.getElementById('instruction').style.fontStyle = "italic";};
-		if (exp.i_style[2]){document.getElementById('instruction').style.textDecoration = "underline";};
-		document.getElementById('q_word').style.color = exp.q_color;
-		document.getElementById('q_word').style.fontFamily = exp.q_font;
-		document.getElementById('q_word').style.fontSize = exp.q_size+"px";
-		if (exp.q_style[0]){document.getElementById('q_word').style.fontWeight = "bold";};
-		if (exp.q_style[1]){document.getElementById('q_word').style.fontStyle = "italic";};
-		if (exp.q_style[2]){document.getElementById('q_word').style.textDecoration = "underline";};
-		document.getElementById('q_feedback').style.fontFamily = exp.q_font;
-		document.getElementById('q_feedback').style.fontSize = exp.q_size+"px";
-		document.getElementById('q_feedback').style.fontStyle = "italic";
-		
-		//hide div
-		document.getElementById('instruction').style.display="none";
-		document.getElementById('stimuli').style.display="none";
-		document.getElementById('sti_frame').style.display="none";
-		document.getElementById('q_frame').style.display="none";
-		document.getElementById('byebye').style.display="none";
-		document.getElementById('sti_word').style.display="none";
-		document.getElementById('q_word').style.display="none";
-		document.getElementById('q_feedback').style.display="none";
-		document.getElementById("q_input").style.display="none";
 
 		//functions
 		function expbegin(){
-		  sub_id=document.getElementById('sub_id').value;
-		  document.getElementById('exp_begin').style.display="none";
-		  insinsert();
+
+			qwait=exp.q_delay;
+			if (sti.fab_feedback==undefined){
+			  fbmark=1;
+			}//see if feedback was defined in csv
+			//result variables
+
+			userlist=Object.keys(sti);
+
+			for (var i=0;i<dtlist.length;i++){
+			  dttemp[dtlist[i]]=[];
+			};
+
+			//layout setting
+			document.body.style.background = exp.bg_color;
+			document.getElementById("stimuli").style.paddingLeft=Number(exp.margin[0])+"%";
+			document.getElementById("stimuli").style.paddingRight=Number(exp.margin[1])+"%";
+			document.getElementById('sti_frame').style.width = Number(100-Number(exp.margin[0])-Number(exp.margin[1]))+"%";
+			document.getElementById('q_frame').style.width = Number(100-Number(exp.margin[0])-Number(exp.margin[1]))+"%";
+			if (exp.sti_display[1]){
+			  document.getElementById("sti_frame").style.height="1%";
+			  document.getElementById("sti_frame").style.top=Number(exp.margin[2])+"%";
+			  document.getElementById("q_frame").style.top=Number(exp.margin[2])+"%";
+			}
+			if (exp.sti_display[1] && !(exp.q_position[0])){
+			  document.getElementById('q_frame').style.top="50%";
+			  document.getElementById('q_frame').style.transform="translateY(-50%)";
+			  document.getElementById('q_frame').style.textAlign = "center";
+			}
+			if (exp.sti_display[0]){
+			  document.getElementById("sti_frame").style.top="50%";
+			  document.getElementById("sti_frame").style.transform="translateY(-50%)";
+			  document.getElementById('sti_frame').style.textAlign = "center"; 
+
+			  document.getElementById('q_frame').style.top="50%";
+			  document.getElementById('q_frame').style.transform="translateY(-50%)";
+			  document.getElementById('q_frame').style.textAlign = "center"; 
+			}
+			document.getElementById('sti_word').style.color = exp.word_color;
+			document.getElementById('sti_word').style.fontFamily = exp.word_font;
+			document.getElementById('sti_word').style.fontSize = exp.word_size+"px";
+			if (exp.word_style[0]){document.getElementById('sti_word').style.fontWeight = "bold";};
+			if (exp.word_style[1]){document.getElementById('sti_word').style.fontStyle = "italic";};
+			if (exp.word_style[2]){document.getElementById('sti_word').style.textDecoration = "underline";};
+			document.getElementById('exp_begin').style.color = exp.i_color;
+			document.getElementById('exp_begin').style.fontFamily = exp.i_font;
+			document.getElementById('exp_begin').style.fontSize = exp.i_size+"px";
+			if (exp.i_style[0]){document.getElementById('exp_begin').style.fontWeight = "bold";};
+			if (exp.i_style[1]){document.getElementById('exp_begin').style.fontStyle = "italic";};
+			if (exp.i_style[2]){document.getElementById('exp_begin').style.textDecoration = "underline";};
+			document.getElementById('byebye').style.color = exp.i_color;
+			document.getElementById('byebye').style.fontFamily = exp.i_font;
+			document.getElementById('byebye').style.fontSize = exp.i_size+"px";
+			document.getElementById('byeword').innerHTML=exp.byeword;
+			if (exp.i_style[0]){document.getElementById('byebye').style.fontWeight = "bold";};
+			if (exp.i_style[1]){document.getElementById('byebye').style.fontStyle = "italic";};
+			if (exp.i_style[2]){document.getElementById('byebye').style.textDecoration = "underline";};
+			document.getElementById('instruction').style.color = exp.i_color;
+			document.getElementById('instruction').style.fontFamily = exp.i_font;
+			document.getElementById('instruction').style.fontSize = exp.i_size+"px";
+			if (exp.i_style[0]){document.getElementById('instruction').style.fontWeight = "bold";};
+			if (exp.i_style[1]){document.getElementById('instruction').style.fontStyle = "italic";};
+			if (exp.i_style[2]){document.getElementById('instruction').style.textDecoration = "underline";};
+			document.getElementById('q_word').style.color = exp.q_color;
+			document.getElementById('q_word').style.fontFamily = exp.q_font;
+			document.getElementById('q_word').style.fontSize = exp.q_size+"px";
+			if (exp.q_style[0]){document.getElementById('q_word').style.fontWeight = "bold";};
+			if (exp.q_style[1]){document.getElementById('q_word').style.fontStyle = "italic";};
+			if (exp.q_style[2]){document.getElementById('q_word').style.textDecoration = "underline";};
+			document.getElementById('q_feedback').style.fontFamily = exp.q_font;
+			document.getElementById('q_feedback').style.fontSize = exp.q_size+"px";
+			document.getElementById('q_feedback').style.fontStyle = "italic";
+		
+
+			sub_id=document.getElementById('sub_id').value;
+		    document.getElementById('exp_begin').style.display="none";
+		    insinsert();
 		}
 
 		function expend(){

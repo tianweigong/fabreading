@@ -101,7 +101,7 @@ Since almost all psycholinguistic researchers write their stimuli in spreadsheet
 
 <p align="center"><img src="https://tianweigong.github.io/source_for_other_website/fab/stimulidemo.jpg" width="600"></p>
 
-- `fab_stimuli` *necessary*: Add `/` at the beginning and the end of the stimuli (You can do it instantly, check here). Add `*` to separate stimuli into different regions, then FAB will support region analysis. If you want to add a fixation `+` at the beginning of sentences, but don't want participants to go back to the fixation later (see the demo above), you can rewrite the sentence as `/+/The old lady lived further away from the city center./`. Namely, `/` can help separate stimuli into different loops, where participants can only go back-and-forth within the loop.
+- `fab_stimulus` *necessary*: Add `/` at the beginning and the end of the stimuli (You can do it instantly, check here). Add `*` to separate stimuli into different regions, then FAB will support region analysis. If you want to add a fixation `+` at the beginning of sentences, but don't want participants to go back to the fixation later (see the demo above), you can rewrite the sentence as `/+/The old lady lived further away from the city center./`. Namely, `/` can help separate stimuli into different loops, where participants can only go back-and-forth within the loop.
 
 - `fab_question`: You can add one question for each stimulus, which could be displayed as texts or a picture. If you want to present multiple questions for one stimulus, add blank rows below that stimulus and only type in your second, third... questions.
 
@@ -116,6 +116,8 @@ Since almost all psycholinguistic researchers write their stimuli in spreadsheet
 - `list`, `block`, `condition`: You can add other columns. The information will not be used in FAB but will appear in the dataset, which may benefit data analysis.
 
 #### Notes for Your CSV File
+Only `fab_stimuli` is necessary for successfully running the experimetal program.
+
 All keywords starting with `fab_` are case-sensitive so make sure you give the right names.
 
 There is another important thing to check before exporting the CSV. Since CSV interpret the English comma as a default delimiter, we cannot include any English comma in the cells, or the delimiter process would go wrong. This sounds ridiculous for linguistic tasks but there is really an easy way to solve it. Just find all `,` and replace them with `&#44`, a code for the English comma in HTML. Participants will see commas as usual in the experiment.
@@ -181,6 +183,17 @@ In order to conduct analysis on the area level, FAB would remove the gaze outlie
 check the following things for debugging :bug:
 - The separating notion for `fab_stimuli` is `/` not `\\`.
 - Remember to remove English commas in CSV stimulus list (see [here](#notes-for-your-csv-file)).
+- Remember to use HTML code to replace other symbols *on your language materials/questions/instructions* that could have conflicts with FAB's inner setting
+  - all `,`should be replaced with `&#44` (because `,` would be used as CSV delimiter/separator)
+  - all `*` should be replaced with `&#42`  (because `*` would be used to mark interest areas)
+  - all `/` should be replaced with `&#47` (because `/` would be used to mark reading areas)
+
+
+## What browser should I use to run FAB
+
+FAB is ideally supported by browsers that provide web developer tools, like Chrome, Firefox, Safari, Edge. You could recommend participants open `FABrunning.html` with one of these browsers for online experiments. This is a very common requirement in online experiments with customized websites ([Gureckis et al., 2016](https://link.springer.com/article/10.3758/s13428-015-0642-8)).
+
+A good thing you can do is to always test your programs on different browsers before releasing them.
 
 ## How to link the picture stimuli/instructions/questions to the stimulus list?
 - For instructions, you can input the picture name (e.g., `ins1.jpg`) in the cell directly.
