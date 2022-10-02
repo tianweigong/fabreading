@@ -195,7 +195,7 @@ FAB is ideally supported by browsers that provide web developer tools, like Chro
 
 A good thing you can do is to always test your programs on different browsers before releasing them.
 
-## How to link the picture stimuli/instructions/questions to the stimulus list?
+## How can I link the picture stimuli/instructions/questions to the stimulus list?
 - For instructions, you can input the picture name (e.g., `ins1.jpg`) in the cell directly.
 - For stimuli, you can write in this way: `/ram.jpg goat.jpg beetle.jpg/` or `/There is a picture1.jpg in my room./` (and choose `by space` as segmentation in `FABdesign.html`)
 - For questions, you can input the question name (e.g., `question1.jpg`) in the cell directly. If you want to combine words and pictures in your questions, you need to add HTML code, but that is easy, just write in this way: `Did you see this object in the previous sentence?<br><img src='media/picture1.jpg'>` (`<br>` is for line breaking).
@@ -206,10 +206,11 @@ FAB does not have the function to randomize the presentation of your trial, for 
 ## Could FAB display multiple pages of instructions/questions?
 Yes. For multiple pages of instructions, just add one blank row, input things on `fab_instruction` cell, and leave other cells empty. See Examples in `templetes/ALLSTIMULI/causalRelatedness`. Similarly, if you want to ask multiple questions for the same stimulus, you can add several blank rows below that stimulus and input questions for the `fab_question` cells while leaving other cells empty.
 
-## How to use FAB for online experiments?
-
+## How can I use FAB for online experiments?
 So far FAB does not have its own web server. We recommend researchers to use any form tool (e.g., Qualtrics, Google Forms) + any online storage tool (e.g., Google Drive, One Drive; it should be chosen according to your privacy concerns) for online experiments at the current stage. Taking Google Drive and Google Forms for example:
 
 1. Compress the procedure folder and upload it to [Google Drive]( https://www.google.com/drive/) , then you can get the link to the procedure and share it with participants afterward.
 2. Create a [Google Forms]( https://docs.google.com/forms/), add content, demographic questions, etc. Paste the google drive link of your procedure for participants to download. And finally add one file-upload question for participants to send their data back.
 
+## How precision is the timing in FAB?
+The timing precision of FAB should be close to a range of online experiment tools, espcially jsPsych. [Here](https://peerj.com/articles/9414/) is a great paper that compared the precision of different online and laboratory tools. For response recording, both FAB and jsPsych use the `addEventListener("keydown")` function. For stimulus updating, jsPsych rewrites HTML while FAB just toggles the visibility of different divisions, which is regarded as [faster](https://stackoverflow.com/questions/51808700/speed-difference-between-inserting-html-and-changing-display-style-property) than rewriting HTML.
