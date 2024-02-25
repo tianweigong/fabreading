@@ -188,7 +188,6 @@ check the following things for debugging :bug:
   - all `*` should be replaced with `&#42`  (because `*` would be used to mark interest areas)
   - all `/` should be replaced with `&#47` (because `/` would be used to mark reading areas)
 
-
 ## What browser should I use to run FAB
 
 FAB is ideally supported by browsers that provide web developer tools, like Chrome, Firefox, Safari, Edge. You could recommend participants open `FABrunning.html` with one of these browsers for online experiments. This is a very common requirement in online experiments with customized websites ([Gureckis et al., 2016](https://link.springer.com/article/10.3758/s13428-015-0642-8)).
